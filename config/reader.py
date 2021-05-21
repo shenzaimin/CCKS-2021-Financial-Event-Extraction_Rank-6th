@@ -233,6 +233,7 @@ class Reader:
                 line = json.loads(line)
                 words = line['text']
                 idx = line['text_id']
+                start = 0
                 if self.digit2zero:
                     words = re.sub('\d', '0', words)
                     count_0 += len(re.findall('0', words))
@@ -258,6 +259,8 @@ class Reader:
                     # for k in k_list:
                     for i in k:
                         start_span = i['start']
+                        if start_span > start:
+                            start = start_span
                         end_span = i['end'] + 1
                         role = i['type']
                         mentions[role] = line['text'][start_span:end_span]
@@ -289,6 +292,11 @@ class Reader:
                     inst.type = evn_type
                     inst.trigger = trigger
                     inst.content = line['text']
+                    inst.level1 = line['level1']
+                    inst.level2 = line['level2']
+                    inst.level3 = line['level3']
+                    inst.level_total = f'{inst.level1}-{inst.level2}-{inst.level3}'
+                    inst.start = start
                     inst.mentions = mentions
                     insts.append(inst)
                     if len(insts) == number:
@@ -303,6 +311,10 @@ class Reader:
             else:
                 return [inst for inst in insts if type in inst.type]
 
+    def cut(self, text, seg_len):
+        str_list = [text[i:i + seg_len] for i in range(0, len(text), seg_len)]
+        return str_list
+
     def read_test_txt(self, file_dir: str, number: int = -1) -> List[Instance]:
         count_0 = 0
         insts = []
@@ -311,23 +323,30 @@ class Reader:
         for f_temp in os.listdir(file_dir):
             file = os.path.join(file_dir, f_temp)
             print("Reading file: " + file)
-            in_file = open(file, 'r', encoding = 'utf-8')
+            in_file = open(file, 'r', encoding='utf-8')
             for line in in_file:
                 line = line.strip()
                 line = json.loads(line)
-                words = line['content']
-                idx = line['id']
-                if self.digit2zero:
-                    words = re.sub('\d', '0', words)
-                    count_0 += len(re.findall('0', words))
-                words = list(words)
-                labels = ['O'] * len(words)
-                inst = Instance(Sentence(words), labels)
-                inst.content = line['content']
-                inst.set_test_id(idx)
-                insts.append(inst)
-                if len(insts) == number:
-                    break
+                words_original = line['text']
+                idx_original = line['text_id']
+                for i, words in enumerate(self.cut(words_original, 500)):
+                    idx = f'{idx_original}-{i}'
+
+                    if self.digit2zero:
+                        words = re.sub('\d', '0', words)
+                        count_0 += len(re.findall('0', words))
+                    words = list(words)
+                    labels = ['O'] * len(words)
+                    inst = Instance(Sentence(words), labels)
+                    inst.content = line['text']
+                    inst.level1 = line['level1']
+                    inst.level2 = line['level2']
+                    inst.level3 = line['level3']
+                    inst.level_total = f'{inst.level1}-{inst.level2}-{inst.level3}'
+                    inst.set_test_id(idx)
+                    insts.append(inst)
+                    if len(insts) == number:
+                        break
         print("numbers being replaced by zero:", count_0)
         print("number of sentences: {}".format(len(insts)))
         return insts

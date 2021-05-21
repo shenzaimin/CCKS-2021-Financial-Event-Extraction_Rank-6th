@@ -22,6 +22,8 @@ import utils
 import copy
 from tqdm import tqdm
 from config.reader import event_type_map, attributes_type_map
+import re
+
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
@@ -563,7 +565,16 @@ def main():
     logging.info("\n\n")
 
 def main_predict():
-
+    # type_map = {
+    #     'zy': '质押',
+    #     'gfgqzr': '股份股权转让',
+    #     'qs': '起诉',
+    #     'tz': '投资',
+    #     'jc': '减持',
+    #     'sg': '收购',
+    #     'pj': '判决'
+    # }
+    attributes_type_map_inv = dict([(v,k) for (k,v) in attributes_type_map.items()])
     logging.info("Transformer implementation")
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
@@ -576,33 +587,34 @@ def main_predict():
     reader = Reader(conf.digit2zero)
 
     # 读取分类结果
-    import pandas as pd
-    cls_out = pd.read_csv('CCKS-Cls/test_output/cls_out_test.csv')
-    cls_dict = dict()
-    for index, row in tqdm(cls_out.iterrows()):
-        ids = row["id"]
-        for tp in ['zy', 'gfgqzr', 'qs', 'tz', 'jc', 'sg', 'pj']:
-            if row[tp] == 1:
-                data_type = type_map[tp]
-                if not ids in cls_dict.keys():
-                    cls_dict[ids] = [data_type]
-                else:
-                    cls_dict[ids].append(data_type)
+    # import pandas as pd
+    # cls_out = pd.read_csv('CCKS-Cls/test_output/cls_out_test.csv')
+    # cls_dict = dict()
+    # for index, row in tqdm(cls_out.iterrows()):
+    #     ids = row["id"]
+    #     for tp in ['zy', 'gfgqzr', 'qs', 'tz', 'jc', 'sg', 'pj']:
+    #         if row[tp] == 1:
+    #             data_type = type_map[tp]
+    #             if not ids in cls_dict.keys():
+    #                 cls_dict[ids] = [data_type]
+    #             else:
+    #                 cls_dict[ids].append(data_type)
     # 分模型进行预测
     lst = []
-    for suffix in ['zy', 'gfgqzr', 'qs', 'tz', 'jc', 'sg', 'pj']:
+    for suffix in ['x']:
         # read tests
         logging.info("\n")
         logging.info("Loading the datasets...")
-        trains = reader.read_txt(conf.train_file, conf.train_num, type_map[suffix])
+        trains = reader.read_txt(conf.train_file, conf.train_num)
         all_tests = reader.read_test_txt(conf.test_file, conf.train_num)
-        for idx in range(len(all_tests)):
-            # 给对象打分类标签
-            if all_tests[idx].id in cls_dict.keys():
-                all_tests[idx].type = cls_dict[all_tests[idx].id]
-            else:
-                all_tests[idx].type = []
-        tests = [test for test in all_tests if type_map[suffix] in test.type]
+        # for idx in range(len(all_tests)):
+        #     # 给对象打分类标签
+        #     if all_tests[idx].id in cls_dict.keys():
+        #         all_tests[idx].type = cls_dict[all_tests[idx].id]
+        #     else:
+        #         all_tests[idx].type = []
+        # tests = [test for test in all_tests if type_map[suffix] in test.type]
+        tests = all_tests
         # query_list = reader.get_origin_query(conf.test_file, conf.train_num)
         # assert len(query_list) == len(tests)
 
@@ -617,7 +629,7 @@ def main_predict():
         cfig.label2idx = conf.label2idx
         cfig.label_size = conf.label_size
         cfig.idx2labels = conf.idx2labels
-        model_folder = conf.model_folder + "_" + suffix + '_1_1'
+        model_folder = conf.model_folder
         model_name = model_folder + "/final_bert_crf"
         # model = BertCRF.from_pretrained(conf.bert_model_dir, config=cfig)
         model = BertCRF(cfig=cfig)
@@ -638,8 +650,10 @@ def main_predict():
             # prediction = tests[idx].output
             tests[idx].prediction = prediction
         for idx in range(len(tests)):
-            qids = tests[idx].id
-            data_type = type_map[suffix]
+            qids_original = tests[idx].id
+            qids = re.search('\d+', qids_original).group()
+            sub_id = re.search('\d+$', qids_original).group()
+            # data_type = type_map[suffix]
             start = -1
             for i in range(len(tests[idx].prediction)):
                 if tests[idx].prediction[i].startswith("B-") and start == -1:
@@ -661,21 +675,21 @@ def main_predict():
                     if tests[idx].prediction[i][2:] == tests[idx].prediction[start][
                                                        2:]:  # START 和 END 的类别必须保持一致，否则不能算实体，放弃抽取
                         end = i
-                        value = tests[idx].content[start:end+1]
-                        role = tests[idx].prediction[i][2+len(suffix):]
-                        sample = {"id": qids, "events": [{"type": data_type,
-                                                          "mentions": [
-                                                              {"word": value, "span": [start, end+1],
-                                                               "role": role
-                                                               }]}]}
+                        value = tests[idx].content[start+500*int(sub_id):end+500*int(sub_id)+1]
+                        role = attributes_type_map_inv[tests[idx].prediction[i][2:]]
+                        sample = {"text_id": qids, "attributes": [
+                                                              {"entity": value, "start": start+500*int(sub_id), "end": end+500*int(sub_id),
+                                                               "type": role}
+                                                                ]
+                                  }
                         lst.append(sample)
                         start = -1
                     else:
                         start = -1
-    sub_data = open('valid_result.json', 'w+', encoding='utf-8')
-    official_test_df = open('data/dev/dev_base.json', 'r', encoding='utf-8').readlines()
-    official_test_transfer_df = open('data/dev/trans_dev.json', 'r', encoding='utf-8').readlines()
-    official_test_df.extend(official_test_transfer_df)
+    sub_data = open('valid_result_2.txt', 'w+', encoding='utf-8')
+    official_test_df = open('data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8').readlines()
+    # official_test_transfer_df = open('data/dev/trans_dev.json', 'r', encoding='utf-8').readlines()
+    # official_test_df.extend(official_test_transfer_df)
     merge_dict = dict()
     # 获取所有的id集合
     idx_list = []
@@ -683,40 +697,40 @@ def main_predict():
     for line in tqdm(official_test_df):
         line = line.strip()
         line = json.loads(line)
-        ids = line['id']
+        ids = line['text_id']
         idx_list.append(ids)
     for k in tqdm(lst):
-        sam_dic = {"id": k['id'], "events": [k['events'][0]]}
-        if k['id'] not in merge_dict.keys():
-            merge_dict[k['id']] = sam_dic
+        sam_dic = {"text_id": k['text_id'], "attribute": [k['attribute'][0]]}
+        if k['text_id'] not in merge_dict.keys():
+            merge_dict[k['text_id']] = sam_dic
         else:
-            merge_dict[k['id']]["events"].append(k['events'][0])
-        if k['id'] in idx_list:
-            idx_list.remove(k['id'])
+            merge_dict[k['text_id']]["attribute"].append(k['attribute'][0])
+        if k['text_id'] in idx_list:
+            idx_list.remove(k['text_id'])
     merge_lst = list(merge_dict.values())
     for ids in tqdm(idx_list):
-        merge_lst.append({"id": ids, "events": []})
+        merge_lst.append({"text_id": ids, "attribute": []})
     for i in tqdm(merge_lst):
-        ids = i['id']
-        events = i['events']
-        sub_dic = {}
-        info_dic = {}
-        for d in events:
-            if d['type'] not in info_dic:
-                info_dic[d['type']] = d['mentions']
-                list1 = info_dic[d['type']]
-            else:
-                info_dic[d['type']] = info_dic[d['type']] + d['mentions']
-        sub_dic['id'] = ids
-        t_list = []
-        for key, value in info_dic.items():
-            dic1 = {}
-            dic1['type'] = key
-            dic1['mentions'] = value
-            t_list.append(dic1)
-        sub_dic['events'] = t_list
+        # ids = i['text_id']
+        # events = i['attribute']
+        # sub_dic = {}
+        # info_dic = {}
+        # for d in events:
+        #     if d['type'] not in info_dic:
+        #         info_dic[d['type']] = d['mentions']
+        #         list1 = info_dic[d['type']]
+        #     else:
+        #         info_dic[d['type']] = info_dic[d['type']] + d['mentions']
+        # sub_dic['text_id'] = ids
+        # t_list = []
+        # for key, value in info_dic.items():
+        #     dic1 = {}
+        #     dic1['type'] = key
+        #     dic1['mentions'] = value
+        #     t_list.append(dic1)
+        # sub_dic['attribute'] = t_list
         # print(sub_dic)
-        json.dump(sub_dic, sub_data, ensure_ascii=False)
+        json.dump(i, sub_data, ensure_ascii=False)
         sub_data.write('\n')
 
 
@@ -1128,7 +1142,7 @@ def main_predict_voting():
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     print(torch.cuda.current_device())
