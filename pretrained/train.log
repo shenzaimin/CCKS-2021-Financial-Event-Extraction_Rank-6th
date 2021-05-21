@@ -1,0 +1,700 @@
+2020-09-14 01:51:04,449:INFO: device: cuda
+2020-09-14 01:51:04,449:INFO: seed: 2020
+2020-09-14 01:51:04,449:INFO: digit2zero: False
+2020-09-14 01:51:04,449:INFO: dataset: data
+2020-09-14 01:51:04,449:INFO: optimizer: sgd
+2020-09-14 01:51:04,449:INFO: learning_rate: 5e-05
+2020-09-14 01:51:04,449:INFO: momentum: 0.0
+2020-09-14 01:51:04,449:INFO: l2: 1e-08
+2020-09-14 01:51:04,449:INFO: lr_decay: 0
+2020-09-14 01:51:04,449:INFO: batch_size: 4
+2020-09-14 01:51:04,449:INFO: num_epochs: 15
+2020-09-14 01:51:04,449:INFO: train_num: -1
+2020-09-14 01:51:04,449:INFO: dev_num: -1
+2020-09-14 01:51:04,449:INFO: num_outer_iterations: 10
+2020-09-14 01:51:04,449:INFO: train_or_predict: 1
+2020-09-14 01:51:04,449:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:51:04,449:INFO: max_len: 400
+2020-09-14 01:51:04,449:INFO: full_finetuning: True
+2020-09-14 01:51:04,449:INFO: clip_grad: 5
+2020-09-14 01:51:04,449:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:51:04,449:INFO: model_folder: pretrained
+2020-09-14 01:51:04,449:INFO: device_num: 2
+2020-09-14 01:51:04,450:INFO: type: 
+2020-09-14 01:51:04,450:INFO: 
+
+2020-09-14 01:51:04,450:INFO: Loading the datasets...
+2020-09-14 01:51:05,672:INFO: Building label idx ...
+2020-09-14 01:51:05,735:INFO: [Training Info] number of instances: 3493
+2020-09-14 01:51:10,894:INFO: Initialized from pre-trained Model
+2020-09-14 01:51:10,894:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:51:41,011:INFO: device: cuda
+2020-09-14 01:51:41,011:INFO: seed: 2020
+2020-09-14 01:51:41,011:INFO: digit2zero: False
+2020-09-14 01:51:41,011:INFO: dataset: data
+2020-09-14 01:51:41,011:INFO: optimizer: sgd
+2020-09-14 01:51:41,011:INFO: learning_rate: 5e-05
+2020-09-14 01:51:41,011:INFO: momentum: 0.0
+2020-09-14 01:51:41,011:INFO: l2: 1e-08
+2020-09-14 01:51:41,011:INFO: lr_decay: 0
+2020-09-14 01:51:41,011:INFO: batch_size: 4
+2020-09-14 01:51:41,011:INFO: num_epochs: 15
+2020-09-14 01:51:41,011:INFO: train_num: -1
+2020-09-14 01:51:41,011:INFO: dev_num: -1
+2020-09-14 01:51:41,011:INFO: num_outer_iterations: 10
+2020-09-14 01:51:41,011:INFO: train_or_predict: 1
+2020-09-14 01:51:41,011:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:51:41,011:INFO: max_len: 400
+2020-09-14 01:51:41,011:INFO: full_finetuning: True
+2020-09-14 01:51:41,011:INFO: clip_grad: 5
+2020-09-14 01:51:41,011:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:51:41,011:INFO: model_folder: pretrained
+2020-09-14 01:51:41,011:INFO: device_num: 2
+2020-09-14 01:51:41,011:INFO: type: 
+2020-09-14 01:51:41,011:INFO: 
+
+2020-09-14 01:51:41,011:INFO: Loading the datasets...
+2020-09-14 01:51:42,248:INFO: Building label idx ...
+2020-09-14 01:51:42,309:INFO: [Training Info] number of instances: 3493
+2020-09-14 01:51:46,312:INFO: Initialized from pre-trained Model
+2020-09-14 01:51:46,312:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:52:57,012:INFO: device: cuda
+2020-09-14 01:52:57,012:INFO: seed: 2020
+2020-09-14 01:52:57,012:INFO: digit2zero: False
+2020-09-14 01:52:57,012:INFO: dataset: data
+2020-09-14 01:52:57,012:INFO: optimizer: sgd
+2020-09-14 01:52:57,012:INFO: learning_rate: 5e-05
+2020-09-14 01:52:57,012:INFO: momentum: 0.0
+2020-09-14 01:52:57,012:INFO: l2: 1e-08
+2020-09-14 01:52:57,012:INFO: lr_decay: 0
+2020-09-14 01:52:57,012:INFO: batch_size: 4
+2020-09-14 01:52:57,012:INFO: num_epochs: 15
+2020-09-14 01:52:57,012:INFO: train_num: -1
+2020-09-14 01:52:57,012:INFO: dev_num: -1
+2020-09-14 01:52:57,012:INFO: num_outer_iterations: 10
+2020-09-14 01:52:57,012:INFO: train_or_predict: 1
+2020-09-14 01:52:57,012:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:52:57,012:INFO: max_len: 400
+2020-09-14 01:52:57,013:INFO: full_finetuning: True
+2020-09-14 01:52:57,013:INFO: clip_grad: 5
+2020-09-14 01:52:57,013:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:52:57,013:INFO: model_folder: pretrained
+2020-09-14 01:52:57,013:INFO: device_num: 2
+2020-09-14 01:52:57,013:INFO: type: 
+2020-09-14 01:52:57,013:INFO: 
+
+2020-09-14 01:52:57,013:INFO: Loading the datasets...
+2020-09-14 01:52:58,238:INFO: Building label idx ...
+2020-09-14 01:52:58,299:INFO: [Training Info] number of instances: 3493
+2020-09-14 01:53:03,484:INFO: Initialized from pre-trained Model
+2020-09-14 01:53:03,484:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:53:35,668:INFO: device: cuda
+2020-09-14 01:53:35,668:INFO: seed: 2020
+2020-09-14 01:53:35,668:INFO: digit2zero: False
+2020-09-14 01:53:35,668:INFO: dataset: data
+2020-09-14 01:53:35,669:INFO: optimizer: sgd
+2020-09-14 01:53:35,669:INFO: learning_rate: 5e-05
+2020-09-14 01:53:35,669:INFO: momentum: 0.0
+2020-09-14 01:53:35,669:INFO: l2: 1e-08
+2020-09-14 01:53:35,669:INFO: lr_decay: 0
+2020-09-14 01:53:35,669:INFO: batch_size: 4
+2020-09-14 01:53:35,669:INFO: num_epochs: 15
+2020-09-14 01:53:35,669:INFO: train_num: -1
+2020-09-14 01:53:35,669:INFO: dev_num: -1
+2020-09-14 01:53:35,669:INFO: num_outer_iterations: 10
+2020-09-14 01:53:35,669:INFO: train_or_predict: 1
+2020-09-14 01:53:35,669:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:53:35,670:INFO: max_len: 400
+2020-09-14 01:53:35,670:INFO: full_finetuning: True
+2020-09-14 01:53:35,670:INFO: clip_grad: 5
+2020-09-14 01:53:35,670:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:53:35,670:INFO: model_folder: pretrained
+2020-09-14 01:53:35,670:INFO: device_num: 2
+2020-09-14 01:53:35,670:INFO: type: 
+2020-09-14 01:53:35,670:INFO: 
+
+2020-09-14 01:53:35,670:INFO: Loading the datasets...
+2020-09-14 01:53:36,913:INFO: Building label idx ...
+2020-09-14 01:53:36,975:INFO: [Training Info] number of instances: 3493
+2020-09-14 01:53:41,651:INFO: Initialized from pre-trained Model
+2020-09-14 01:53:41,651:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:53:41,651:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 01:53:48,750:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 01:53:48,751:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 01:53:49,097:INFO: full finetuning
+2020-09-14 01:55:57,462:INFO: device: cuda
+2020-09-14 01:55:57,462:INFO: seed: 2020
+2020-09-14 01:55:57,462:INFO: digit2zero: False
+2020-09-14 01:55:57,462:INFO: dataset: data
+2020-09-14 01:55:57,462:INFO: optimizer: sgd
+2020-09-14 01:55:57,462:INFO: learning_rate: 5e-05
+2020-09-14 01:55:57,462:INFO: momentum: 0.0
+2020-09-14 01:55:57,462:INFO: l2: 1e-08
+2020-09-14 01:55:57,462:INFO: lr_decay: 0
+2020-09-14 01:55:57,462:INFO: batch_size: 4
+2020-09-14 01:55:57,462:INFO: num_epochs: 15
+2020-09-14 01:55:57,462:INFO: train_num: -1
+2020-09-14 01:55:57,462:INFO: dev_num: -1
+2020-09-14 01:55:57,462:INFO: num_outer_iterations: 10
+2020-09-14 01:55:57,462:INFO: train_or_predict: 1
+2020-09-14 01:55:57,462:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:55:57,462:INFO: max_len: 400
+2020-09-14 01:55:57,462:INFO: full_finetuning: True
+2020-09-14 01:55:57,462:INFO: clip_grad: 5
+2020-09-14 01:55:57,463:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:55:57,463:INFO: model_folder: pretrained
+2020-09-14 01:55:57,463:INFO: device_num: 2
+2020-09-14 01:55:57,463:INFO: type: 
+2020-09-14 01:55:57,463:INFO: 
+
+2020-09-14 01:55:57,463:INFO: Loading the datasets...
+2020-09-14 01:55:58,684:INFO: Building label idx ...
+2020-09-14 01:55:58,745:INFO: [Training Info] number of instances: 3493
+2020-09-14 01:56:02,709:INFO: Initialized from pre-trained Model
+2020-09-14 01:56:02,709:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:56:02,709:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 01:56:09,671:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 01:56:09,671:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 01:56:11,379:INFO: full finetuning
+2020-09-14 01:59:14,247:INFO: device: cuda
+2020-09-14 01:59:14,247:INFO: seed: 2020
+2020-09-14 01:59:14,247:INFO: digit2zero: False
+2020-09-14 01:59:14,247:INFO: dataset: data
+2020-09-14 01:59:14,247:INFO: optimizer: sgd
+2020-09-14 01:59:14,247:INFO: learning_rate: 5e-05
+2020-09-14 01:59:14,247:INFO: momentum: 0.0
+2020-09-14 01:59:14,247:INFO: l2: 1e-08
+2020-09-14 01:59:14,248:INFO: lr_decay: 0
+2020-09-14 01:59:14,248:INFO: batch_size: 4
+2020-09-14 01:59:14,248:INFO: num_epochs: 15
+2020-09-14 01:59:14,248:INFO: train_num: -1
+2020-09-14 01:59:14,248:INFO: dev_num: -1
+2020-09-14 01:59:14,248:INFO: num_outer_iterations: 10
+2020-09-14 01:59:14,248:INFO: train_or_predict: 1
+2020-09-14 01:59:14,248:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 01:59:14,248:INFO: max_len: 400
+2020-09-14 01:59:14,248:INFO: full_finetuning: True
+2020-09-14 01:59:14,248:INFO: clip_grad: 5
+2020-09-14 01:59:14,248:INFO: gradient_accumulation_steps: 4
+2020-09-14 01:59:14,248:INFO: model_folder: pretrained
+2020-09-14 01:59:14,249:INFO: device_num: 2
+2020-09-14 01:59:14,249:INFO: type: 
+2020-09-14 01:59:14,249:INFO: 
+
+2020-09-14 01:59:14,249:INFO: Loading the datasets...
+2020-09-14 01:59:14,841:INFO: Building label idx ...
+2020-09-14 01:59:14,891:INFO: [Training Info] number of instances: 2839
+2020-09-14 01:59:18,831:INFO: Initialized from pre-trained Model
+2020-09-14 01:59:18,831:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 01:59:18,831:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 01:59:25,828:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 01:59:25,828:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 01:59:27,541:INFO: full finetuning
+2020-09-14 02:01:23,148:INFO: device: cuda
+2020-09-14 02:01:23,149:INFO: seed: 2020
+2020-09-14 02:01:23,149:INFO: digit2zero: False
+2020-09-14 02:01:23,149:INFO: dataset: data
+2020-09-14 02:01:23,149:INFO: optimizer: sgd
+2020-09-14 02:01:23,149:INFO: learning_rate: 5e-05
+2020-09-14 02:01:23,149:INFO: momentum: 0.0
+2020-09-14 02:01:23,149:INFO: l2: 1e-08
+2020-09-14 02:01:23,149:INFO: lr_decay: 0
+2020-09-14 02:01:23,149:INFO: batch_size: 3
+2020-09-14 02:01:23,149:INFO: num_epochs: 15
+2020-09-14 02:01:23,150:INFO: train_num: -1
+2020-09-14 02:01:23,150:INFO: dev_num: -1
+2020-09-14 02:01:23,150:INFO: num_outer_iterations: 10
+2020-09-14 02:01:23,150:INFO: train_or_predict: 1
+2020-09-14 02:01:23,150:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 02:01:23,150:INFO: max_len: 400
+2020-09-14 02:01:23,150:INFO: full_finetuning: True
+2020-09-14 02:01:23,150:INFO: clip_grad: 5
+2020-09-14 02:01:23,150:INFO: gradient_accumulation_steps: 4
+2020-09-14 02:01:23,150:INFO: model_folder: pretrained
+2020-09-14 02:01:23,150:INFO: device_num: 2
+2020-09-14 02:01:23,150:INFO: type: 
+2020-09-14 02:01:23,150:INFO: 
+
+2020-09-14 02:01:23,151:INFO: Loading the datasets...
+2020-09-14 02:01:23,751:INFO: Building label idx ...
+2020-09-14 02:01:23,805:INFO: [Training Info] number of instances: 2839
+2020-09-14 02:01:30,610:INFO: Initialized from pre-trained Model
+2020-09-14 02:01:30,610:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 02:01:30,610:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 02:01:37,645:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 02:01:37,645:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 02:01:37,829:INFO: full finetuning
+2020-09-14 02:04:51,456:INFO: Epoch 1: 70.21375, Time is 193.62s
+2020-09-14 02:05:03,007:INFO: [dev set] Precision: 41.51, Recall: 37.78, F1: 39.56
+2020-09-14 02:05:03,007:INFO: saving the best model...
+2020-09-14 02:05:09,045:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:08:18,585:INFO: Epoch 2: 38.59598, Time is 189.54s
+2020-09-14 02:08:30,233:INFO: [dev set] Precision: 48.20, Recall: 48.79, F1: 48.49
+2020-09-14 02:08:30,233:INFO: saving the best model...
+2020-09-14 02:08:37,826:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:14:51,807:INFO: device: cuda
+2020-09-14 02:14:51,807:INFO: seed: 2020
+2020-09-14 02:14:51,807:INFO: digit2zero: False
+2020-09-14 02:14:51,807:INFO: dataset: data
+2020-09-14 02:14:51,807:INFO: optimizer: sgd
+2020-09-14 02:14:51,807:INFO: learning_rate: 5e-05
+2020-09-14 02:14:51,807:INFO: momentum: 0.0
+2020-09-14 02:14:51,807:INFO: l2: 1e-08
+2020-09-14 02:14:51,807:INFO: lr_decay: 0
+2020-09-14 02:14:51,807:INFO: batch_size: 3
+2020-09-14 02:14:51,807:INFO: num_epochs: 15
+2020-09-14 02:14:51,808:INFO: train_num: -1
+2020-09-14 02:14:51,808:INFO: dev_num: -1
+2020-09-14 02:14:51,808:INFO: num_outer_iterations: 10
+2020-09-14 02:14:51,808:INFO: train_or_predict: 1
+2020-09-14 02:14:51,808:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 02:14:51,808:INFO: max_len: 400
+2020-09-14 02:14:51,808:INFO: full_finetuning: True
+2020-09-14 02:14:51,808:INFO: clip_grad: 5
+2020-09-14 02:14:51,808:INFO: gradient_accumulation_steps: 4
+2020-09-14 02:14:51,808:INFO: model_folder: pretrained
+2020-09-14 02:14:51,808:INFO: device_num: 2
+2020-09-14 02:14:51,808:INFO: type: 
+2020-09-14 02:14:51,808:INFO: 
+
+2020-09-14 02:14:51,808:INFO: Loading the datasets...
+2020-09-14 02:14:53,059:INFO: Building label idx ...
+2020-09-14 02:14:53,123:INFO: [Training Info] number of instances: 3493
+2020-09-14 02:14:59,213:INFO: Initialized from pre-trained Model
+2020-09-14 02:14:59,213:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 02:14:59,213:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 02:15:06,230:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 02:15:06,230:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 02:15:06,414:INFO: full finetuning
+2020-09-14 02:31:10,212:INFO: device: cuda
+2020-09-14 02:31:10,212:INFO: seed: 2020
+2020-09-14 02:31:10,212:INFO: digit2zero: False
+2020-09-14 02:31:10,212:INFO: dataset: data
+2020-09-14 02:31:10,213:INFO: optimizer: sgd
+2020-09-14 02:31:10,213:INFO: learning_rate: 5e-05
+2020-09-14 02:31:10,213:INFO: momentum: 0.0
+2020-09-14 02:31:10,213:INFO: l2: 1e-08
+2020-09-14 02:31:10,213:INFO: lr_decay: 0
+2020-09-14 02:31:10,213:INFO: batch_size: 2
+2020-09-14 02:31:10,213:INFO: num_epochs: 15
+2020-09-14 02:31:10,213:INFO: train_num: -1
+2020-09-14 02:31:10,213:INFO: dev_num: -1
+2020-09-14 02:31:10,213:INFO: num_outer_iterations: 10
+2020-09-14 02:31:10,213:INFO: train_or_predict: 1
+2020-09-14 02:31:10,213:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 02:31:10,213:INFO: max_len: 400
+2020-09-14 02:31:10,213:INFO: full_finetuning: True
+2020-09-14 02:31:10,213:INFO: clip_grad: 5
+2020-09-14 02:31:10,213:INFO: gradient_accumulation_steps: 4
+2020-09-14 02:31:10,213:INFO: model_folder: pretrained
+2020-09-14 02:31:10,213:INFO: device_num: 2
+2020-09-14 02:31:10,213:INFO: type: 
+2020-09-14 02:31:10,213:INFO: 
+
+2020-09-14 02:31:10,214:INFO: Loading the datasets...
+2020-09-14 02:31:10,801:INFO: Building label idx ...
+2020-09-14 02:31:10,887:INFO: [Training Info] number of instances: 3371
+2020-09-14 02:31:15,954:INFO: Initialized from pre-trained Model
+2020-09-14 02:31:15,954:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 02:31:15,954:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 02:31:23,114:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 02:31:23,114:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 02:31:23,381:INFO: full finetuning
+2020-09-14 02:35:50,045:INFO: Epoch 1: 43.09411, Time is 266.66s
+2020-09-14 02:36:51,777:INFO: [dev set] Precision: 46.49, Recall: 51.08, F1: 48.68
+2020-09-14 02:36:51,777:INFO: saving the best model...
+2020-09-14 02:36:59,481:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:37:41,984:INFO: device: cuda
+2020-09-14 02:37:41,984:INFO: seed: 2020
+2020-09-14 02:37:41,984:INFO: digit2zero: False
+2020-09-14 02:37:41,984:INFO: dataset: data
+2020-09-14 02:37:41,984:INFO: optimizer: sgd
+2020-09-14 02:37:41,984:INFO: learning_rate: 5e-05
+2020-09-14 02:37:41,984:INFO: momentum: 0.0
+2020-09-14 02:37:41,984:INFO: l2: 1e-08
+2020-09-14 02:37:41,984:INFO: lr_decay: 0
+2020-09-14 02:37:41,984:INFO: batch_size: 2
+2020-09-14 02:37:41,984:INFO: num_epochs: 15
+2020-09-14 02:37:41,984:INFO: train_num: -1
+2020-09-14 02:37:41,984:INFO: dev_num: -1
+2020-09-14 02:37:41,984:INFO: num_outer_iterations: 10
+2020-09-14 02:37:41,984:INFO: train_or_predict: 1
+2020-09-14 02:37:41,984:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 02:37:41,984:INFO: max_len: 400
+2020-09-14 02:37:41,984:INFO: full_finetuning: True
+2020-09-14 02:37:41,985:INFO: clip_grad: 5
+2020-09-14 02:37:41,985:INFO: gradient_accumulation_steps: 4
+2020-09-14 02:37:41,985:INFO: model_folder: pretrained
+2020-09-14 02:37:41,985:INFO: device_num: 2
+2020-09-14 02:37:41,985:INFO: type: 
+2020-09-14 02:37:41,985:INFO: 
+
+2020-09-14 02:37:41,985:INFO: Loading the datasets...
+2020-09-14 02:37:42,583:INFO: Building label idx ...
+2020-09-14 02:37:42,670:INFO: [Training Info] number of instances: 3193
+2020-09-14 02:37:46,905:INFO: Initialized from pre-trained Model
+2020-09-14 02:37:46,905:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 02:37:46,905:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 02:37:53,999:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 02:37:53,999:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 02:37:55,138:INFO: full finetuning
+2020-09-14 02:42:04,057:INFO: Epoch 1: 42.04858, Time is 248.92s
+2020-09-14 02:43:02,789:INFO: [dev set] Precision: 48.07, Recall: 47.10, F1: 47.58
+2020-09-14 02:43:02,789:INFO: saving the best model...
+2020-09-14 02:43:10,774:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:47:15,329:INFO: Epoch 2: 24.73740, Time is 244.55s
+2020-09-14 02:48:13,173:INFO: [dev set] Precision: 50.42, Recall: 55.87, F1: 53.01
+2020-09-14 02:48:13,173:INFO: saving the best model...
+2020-09-14 02:48:21,105:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:52:25,049:INFO: Epoch 3: 20.43394, Time is 243.94s
+2020-09-14 02:53:24,130:INFO: [dev set] Precision: 54.48, Recall: 57.91, F1: 56.14
+2020-09-14 02:53:24,130:INFO: saving the best model...
+2020-09-14 02:53:31,808:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 02:57:35,340:INFO: Epoch 4: 18.21626, Time is 243.52s
+2020-09-14 02:58:33,672:INFO: [dev set] Precision: 56.55, Recall: 58.01, F1: 57.27
+2020-09-14 02:58:33,672:INFO: saving the best model...
+2020-09-14 02:58:41,365:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:02:52,596:INFO: Epoch 5: 16.70974, Time is 251.23s
+2020-09-14 03:03:50,285:INFO: [dev set] Precision: 56.56, Recall: 62.31, F1: 59.30
+2020-09-14 03:03:50,285:INFO: saving the best model...
+2020-09-14 03:03:58,000:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:08:06,931:INFO: Epoch 6: 15.43794, Time is 248.92s
+2020-09-14 03:09:05,962:INFO: [dev set] Precision: 58.94, Recall: 62.34, F1: 60.59
+2020-09-14 03:09:05,962:INFO: saving the best model...
+2020-09-14 03:09:13,817:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:13:20,320:INFO: Epoch 7: 14.71480, Time is 246.50s
+2020-09-14 03:14:18,203:INFO: [dev set] Precision: 59.30, Recall: 64.26, F1: 61.68
+2020-09-14 03:14:18,203:INFO: saving the best model...
+2020-09-14 03:14:26,043:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:18:33,048:INFO: Epoch 8: 14.20079, Time is 247.00s
+2020-09-14 03:19:33,229:INFO: [dev set] Precision: 59.62, Recall: 64.73, F1: 62.07
+2020-09-14 03:19:33,229:INFO: saving the best model...
+2020-09-14 03:19:40,962:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:23:53,566:INFO: Epoch 9: 13.67859, Time is 252.60s
+2020-09-14 03:24:51,450:INFO: [dev set] Precision: 60.54, Recall: 64.71, F1: 62.56
+2020-09-14 03:24:51,450:INFO: saving the best model...
+2020-09-14 03:24:59,334:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:29:09,036:INFO: Epoch 10: 13.30923, Time is 249.70s
+2020-09-14 03:30:07,350:INFO: [dev set] Precision: 60.25, Recall: 63.77, F1: 61.96
+2020-09-14 03:34:10,261:INFO: Epoch 11: 13.04498, Time is 242.91s
+2020-09-14 03:35:08,546:INFO: [dev set] Precision: 59.58, Recall: 66.17, F1: 62.70
+2020-09-14 03:35:08,547:INFO: saving the best model...
+2020-09-14 03:35:16,412:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:39:24,162:INFO: Epoch 12: 12.73674, Time is 247.74s
+2020-09-14 03:40:22,048:INFO: [dev set] Precision: 61.06, Recall: 64.73, F1: 62.84
+2020-09-14 03:40:22,048:INFO: saving the best model...
+2020-09-14 03:40:30,046:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:44:38,178:INFO: Epoch 13: 12.53644, Time is 248.13s
+2020-09-14 03:45:36,438:INFO: [dev set] Precision: 61.26, Recall: 65.98, F1: 63.53
+2020-09-14 03:45:36,438:INFO: saving the best model...
+2020-09-14 03:45:44,079:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 03:49:53,306:INFO: Epoch 14: 12.32264, Time is 249.22s
+2020-09-14 03:50:51,619:INFO: [dev set] Precision: 61.58, Recall: 65.18, F1: 63.33
+2020-09-14 03:54:59,756:INFO: Epoch 15: 12.16877, Time is 248.13s
+2020-09-14 03:55:57,820:INFO: [dev set] Precision: 61.45, Recall: 64.18, F1: 62.79
+2020-09-14 09:56:24,802:INFO: device: cuda
+2020-09-14 09:56:24,802:INFO: seed: 2020
+2020-09-14 09:56:24,802:INFO: digit2zero: False
+2020-09-14 09:56:24,802:INFO: dataset: data
+2020-09-14 09:56:24,802:INFO: optimizer: sgd
+2020-09-14 09:56:24,802:INFO: learning_rate: 5e-05
+2020-09-14 09:56:24,802:INFO: momentum: 0.0
+2020-09-14 09:56:24,803:INFO: l2: 1e-08
+2020-09-14 09:56:24,803:INFO: lr_decay: 0
+2020-09-14 09:56:24,803:INFO: batch_size: 2
+2020-09-14 09:56:24,803:INFO: num_epochs: 15
+2020-09-14 09:56:24,803:INFO: train_num: -1
+2020-09-14 09:56:24,803:INFO: dev_num: -1
+2020-09-14 09:56:24,803:INFO: num_outer_iterations: 10
+2020-09-14 09:56:24,803:INFO: train_or_predict: 1
+2020-09-14 09:56:24,803:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-14 09:56:24,803:INFO: max_len: 400
+2020-09-14 09:56:24,803:INFO: full_finetuning: True
+2020-09-14 09:56:24,803:INFO: clip_grad: 5
+2020-09-14 09:56:24,803:INFO: gradient_accumulation_steps: 4
+2020-09-14 09:56:24,803:INFO: model_folder: pretrained
+2020-09-14 09:56:24,803:INFO: device_num: 0
+2020-09-14 09:56:24,803:INFO: type: 
+2020-09-14 09:56:24,803:INFO: 
+
+2020-09-14 09:56:24,803:INFO: Loading the datasets...
+2020-09-14 09:56:26,091:INFO: Building label idx ...
+2020-09-14 09:56:26,214:INFO: [Training Info] number of instances: 3929
+2020-09-14 09:56:32,127:INFO: Initialized from pre-trained Model
+2020-09-14 09:56:32,127:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-14 09:56:32,128:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-14 09:56:39,284:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-14 09:56:39,284:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-14 09:56:39,468:INFO: full finetuning
+2020-09-14 10:03:11,461:INFO: Epoch 1: 31.71057, Time is 391.99s
+2020-09-14 10:04:24,381:INFO: [dev set] Precision: 49.24, Recall: 57.98, F1: 53.25
+2020-09-14 10:04:24,381:INFO: saving the best model...
+2020-09-14 10:04:30,451:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:11:02,193:INFO: Epoch 2: 17.14493, Time is 391.74s
+2020-09-14 10:12:17,491:INFO: [dev set] Precision: 56.55, Recall: 60.38, F1: 58.40
+2020-09-14 10:12:17,492:INFO: saving the best model...
+2020-09-14 10:12:26,223:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:18:57,246:INFO: Epoch 3: 13.87730, Time is 391.02s
+2020-09-14 10:20:10,131:INFO: [dev set] Precision: 57.41, Recall: 62.97, F1: 60.06
+2020-09-14 10:20:10,131:INFO: saving the best model...
+2020-09-14 10:20:18,474:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:26:48,391:INFO: Epoch 4: 12.01453, Time is 389.91s
+2020-09-14 10:28:03,402:INFO: [dev set] Precision: 61.57, Recall: 68.31, F1: 64.76
+2020-09-14 10:28:03,402:INFO: saving the best model...
+2020-09-14 10:28:12,153:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:34:42,323:INFO: Epoch 5: 10.73278, Time is 390.16s
+2020-09-14 10:35:57,648:INFO: [dev set] Precision: 63.38, Recall: 69.75, F1: 66.41
+2020-09-14 10:35:57,648:INFO: saving the best model...
+2020-09-14 10:36:05,861:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:42:39,016:INFO: Epoch 6: 9.96895, Time is 393.15s
+2020-09-14 10:43:53,706:INFO: [dev set] Precision: 64.10, Recall: 70.91, F1: 67.33
+2020-09-14 10:43:53,706:INFO: saving the best model...
+2020-09-14 10:44:01,940:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:50:38,592:INFO: Epoch 7: 9.28985, Time is 396.65s
+2020-09-14 10:51:53,920:INFO: [dev set] Precision: 65.44, Recall: 69.79, F1: 67.55
+2020-09-14 10:51:53,921:INFO: saving the best model...
+2020-09-14 10:52:02,004:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 10:58:35,126:INFO: Epoch 8: 8.77681, Time is 393.12s
+2020-09-14 10:59:51,035:INFO: [dev set] Precision: 67.03, Recall: 71.54, F1: 69.21
+2020-09-14 10:59:51,035:INFO: saving the best model...
+2020-09-14 10:59:59,107:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:06:35,204:INFO: Epoch 9: 8.44407, Time is 396.09s
+2020-09-14 11:08:20,472:INFO: [dev set] Precision: 66.22, Recall: 73.55, F1: 69.69
+2020-09-14 11:08:20,472:INFO: saving the best model...
+2020-09-14 11:08:32,291:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:16:25,236:INFO: Epoch 10: 8.10074, Time is 472.93s
+2020-09-14 11:17:44,961:INFO: [dev set] Precision: 67.34, Recall: 72.67, F1: 69.91
+2020-09-14 11:17:44,962:INFO: saving the best model...
+2020-09-14 11:17:53,053:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:24:26,238:INFO: Epoch 11: 7.82504, Time is 393.18s
+2020-09-14 11:25:46,028:INFO: [dev set] Precision: 68.03, Recall: 73.57, F1: 70.69
+2020-09-14 11:25:46,028:INFO: saving the best model...
+2020-09-14 11:25:53,853:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:32:36,504:INFO: Epoch 12: 7.61800, Time is 402.64s
+2020-09-14 11:33:57,984:INFO: [dev set] Precision: 68.09, Recall: 74.35, F1: 71.08
+2020-09-14 11:33:57,984:INFO: saving the best model...
+2020-09-14 11:34:06,747:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:40:50,418:INFO: Epoch 13: 7.46199, Time is 403.66s
+2020-09-14 11:42:14,047:INFO: [dev set] Precision: 66.58, Recall: 75.91, F1: 70.94
+2020-09-14 11:48:53,468:INFO: Epoch 14: 7.34811, Time is 399.42s
+2020-09-14 11:50:10,090:INFO: [dev set] Precision: 68.64, Recall: 74.79, F1: 71.58
+2020-09-14 11:50:10,090:INFO: saving the best model...
+2020-09-14 11:50:17,966:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-14 11:56:55,627:INFO: Epoch 15: 7.23750, Time is 397.65s
+2020-09-14 11:58:16,489:INFO: [dev set] Precision: 68.84, Recall: 75.10, F1: 71.83
+2020-09-14 11:58:16,490:INFO: saving the best model...
+2020-09-14 11:58:24,702:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:08:47,379:INFO: device: cuda
+2020-09-18 15:08:47,382:INFO: seed: 2020
+2020-09-18 15:08:47,382:INFO: digit2zero: False
+2020-09-18 15:08:47,382:INFO: dataset: data
+2020-09-18 15:08:47,382:INFO: optimizer: sgd
+2020-09-18 15:08:47,382:INFO: learning_rate: 5e-05
+2020-09-18 15:08:47,382:INFO: momentum: 0.0
+2020-09-18 15:08:47,382:INFO: l2: 1e-08
+2020-09-18 15:08:47,382:INFO: lr_decay: 0
+2020-09-18 15:08:47,382:INFO: batch_size: 2
+2020-09-18 15:08:47,382:INFO: num_epochs: 15
+2020-09-18 15:08:47,382:INFO: train_num: -1
+2020-09-18 15:08:47,382:INFO: dev_num: -1
+2020-09-18 15:08:47,382:INFO: num_outer_iterations: 10
+2020-09-18 15:08:47,382:INFO: train_or_predict: 1
+2020-09-18 15:08:47,382:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-18 15:08:47,382:INFO: max_len: 400
+2020-09-18 15:08:47,382:INFO: full_finetuning: True
+2020-09-18 15:08:47,382:INFO: clip_grad: 5
+2020-09-18 15:08:47,382:INFO: gradient_accumulation_steps: 4
+2020-09-18 15:08:47,382:INFO: model_folder: pretrained
+2020-09-18 15:08:47,382:INFO: device_num: 2
+2020-09-18 15:08:47,382:INFO: type: 
+2020-09-18 15:08:47,382:INFO: 
+
+2020-09-18 15:08:47,382:INFO: Loading the datasets...
+2020-09-18 15:08:48,690:INFO: Building label idx ...
+2020-09-18 15:08:48,803:INFO: [Training Info] number of instances: 3929
+2020-09-18 15:08:53,306:INFO: Initialized from pre-trained Model
+2020-09-18 15:08:53,306:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-18 15:08:53,306:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-18 15:09:01,100:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-18 15:09:01,100:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-18 15:09:02,084:INFO: full finetuning
+2020-09-18 15:15:38,940:INFO: Epoch 1: 31.71057, Time is 396.85s
+2020-09-18 15:16:56,277:INFO: [dev set] Precision: 49.24, Recall: 57.98, F1: 53.25
+2020-09-18 15:16:56,277:INFO: saving the best model...
+2020-09-18 15:17:06,325:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:23:42,823:INFO: Epoch 2: 17.14493, Time is 396.49s
+2020-09-18 15:25:00,957:INFO: [dev set] Precision: 56.55, Recall: 60.38, F1: 58.40
+2020-09-18 15:25:00,957:INFO: saving the best model...
+2020-09-18 15:25:09,709:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:32:04,493:INFO: Epoch 3: 13.87730, Time is 414.77s
+2020-09-18 15:33:29,301:INFO: [dev set] Precision: 57.41, Recall: 62.97, F1: 60.06
+2020-09-18 15:33:29,301:INFO: saving the best model...
+2020-09-18 15:33:40,041:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:40:37,618:INFO: Epoch 4: 12.01453, Time is 417.57s
+2020-09-18 15:42:02,575:INFO: [dev set] Precision: 61.57, Recall: 68.31, F1: 64.76
+2020-09-18 15:42:02,575:INFO: saving the best model...
+2020-09-18 15:42:14,097:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:49:11,520:INFO: Epoch 5: 10.73278, Time is 417.42s
+2020-09-18 15:50:36,473:INFO: [dev set] Precision: 63.38, Recall: 69.75, F1: 66.41
+2020-09-18 15:50:36,474:INFO: saving the best model...
+2020-09-18 15:50:47,194:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 15:57:23,151:INFO: Epoch 6: 9.96895, Time is 395.95s
+2020-09-18 15:58:41,786:INFO: [dev set] Precision: 64.10, Recall: 70.91, F1: 67.33
+2020-09-18 15:58:41,786:INFO: saving the best model...
+2020-09-18 15:58:50,150:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:05:27,172:INFO: Epoch 7: 9.28985, Time is 397.02s
+2020-09-18 16:06:44,938:INFO: [dev set] Precision: 65.44, Recall: 69.79, F1: 67.55
+2020-09-18 16:06:44,938:INFO: saving the best model...
+2020-09-18 16:06:54,002:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:13:29,636:INFO: Epoch 8: 8.77681, Time is 395.62s
+2020-09-18 16:14:47,112:INFO: [dev set] Precision: 67.03, Recall: 71.54, F1: 69.21
+2020-09-18 16:14:47,112:INFO: saving the best model...
+2020-09-18 16:14:55,571:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:21:50,125:INFO: Epoch 9: 8.44407, Time is 414.54s
+2020-09-18 16:23:15,033:INFO: [dev set] Precision: 66.22, Recall: 73.55, F1: 69.69
+2020-09-18 16:23:15,033:INFO: saving the best model...
+2020-09-18 16:23:25,822:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:30:24,129:INFO: Epoch 10: 8.10074, Time is 418.30s
+2020-09-18 16:31:48,849:INFO: [dev set] Precision: 67.34, Recall: 72.67, F1: 69.91
+2020-09-18 16:31:48,849:INFO: saving the best model...
+2020-09-18 16:31:58,595:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:38:56,968:INFO: Epoch 11: 7.82504, Time is 418.36s
+2020-09-18 16:40:22,397:INFO: [dev set] Precision: 68.03, Recall: 73.57, F1: 70.69
+2020-09-18 16:40:22,397:INFO: saving the best model...
+2020-09-18 16:40:33,076:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:47:20,544:INFO: Epoch 12: 7.61800, Time is 407.46s
+2020-09-18 16:48:46,394:INFO: [dev set] Precision: 68.09, Recall: 74.35, F1: 71.08
+2020-09-18 16:48:46,395:INFO: saving the best model...
+2020-09-18 16:48:57,519:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 16:55:55,022:INFO: Epoch 13: 7.46199, Time is 417.49s
+2020-09-18 16:57:20,265:INFO: [dev set] Precision: 66.58, Recall: 75.91, F1: 70.94
+2020-09-18 17:04:18,029:INFO: Epoch 14: 7.34811, Time is 417.76s
+2020-09-18 17:05:44,182:INFO: [dev set] Precision: 68.64, Recall: 74.79, F1: 71.58
+2020-09-18 17:05:44,182:INFO: saving the best model...
+2020-09-18 17:05:54,338:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-18 17:12:41,906:INFO: Epoch 15: 7.23750, Time is 407.56s
+2020-09-18 17:13:59,092:INFO: [dev set] Precision: 68.84, Recall: 75.10, F1: 71.83
+2020-09-18 17:13:59,092:INFO: saving the best model...
+2020-09-18 17:14:07,474:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:06:40,956:INFO: device: cuda
+2020-09-19 12:06:40,956:INFO: seed: 2020
+2020-09-19 12:06:40,956:INFO: digit2zero: False
+2020-09-19 12:06:40,956:INFO: dataset: data
+2020-09-19 12:06:40,956:INFO: optimizer: sgd
+2020-09-19 12:06:40,956:INFO: learning_rate: 5e-05
+2020-09-19 12:06:40,956:INFO: momentum: 0.0
+2020-09-19 12:06:40,956:INFO: l2: 1e-08
+2020-09-19 12:06:40,956:INFO: lr_decay: 0
+2020-09-19 12:06:40,956:INFO: batch_size: 2
+2020-09-19 12:06:40,956:INFO: num_epochs: 15
+2020-09-19 12:06:40,956:INFO: train_num: -1
+2020-09-19 12:06:40,956:INFO: dev_num: -1
+2020-09-19 12:06:40,956:INFO: num_outer_iterations: 10
+2020-09-19 12:06:40,956:INFO: train_or_predict: 1
+2020-09-19 12:06:40,956:INFO: bert_model_dir: chinese_roberta_wwm_ext_pytorch
+2020-09-19 12:06:40,956:INFO: max_len: 400
+2020-09-19 12:06:40,957:INFO: full_finetuning: True
+2020-09-19 12:06:40,957:INFO: clip_grad: 5
+2020-09-19 12:06:40,957:INFO: gradient_accumulation_steps: 4
+2020-09-19 12:06:40,957:INFO: model_folder: pretrained
+2020-09-19 12:06:40,957:INFO: device_num: 2
+2020-09-19 12:06:40,957:INFO: type: 
+2020-09-19 12:06:40,957:INFO: 
+
+2020-09-19 12:06:40,957:INFO: Loading the datasets...
+2020-09-19 12:06:42,242:INFO: Building label idx ...
+2020-09-19 12:06:42,359:INFO: [Training Info] number of instances: 3929
+2020-09-19 12:06:45,433:INFO: Initialized from pre-trained Model
+2020-09-19 12:06:45,433:INFO: [Training Info] The model will be saved to: pretrained
+2020-09-19 12:06:45,433:INFO: loading weights file chinese_roberta_wwm_ext_pytorch/pytorch_model.bin
+2020-09-19 12:06:52,823:WARNING: Some weights of the model checkpoint at chinese_roberta_wwm_ext_pytorch were not used when initializing BertCRF_pre: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertCRF_pre from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertCRF_pre from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+2020-09-19 12:06:52,823:WARNING: Some weights of BertCRF_pre were not initialized from the model checkpoint at chinese_roberta_wwm_ext_pytorch and are newly initialized: ['classifier_pre.weight', 'classifier_pre.bias', 'inferencer_pre.transition']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2020-09-19 12:06:53,006:INFO: full finetuning
+2020-09-19 12:13:28,477:INFO: Epoch 1: 31.71057, Time is 395.47s
+2020-09-19 12:14:43,420:INFO: [dev set] Precision: 49.24, Recall: 57.98, F1: 53.25
+2020-09-19 12:14:43,420:INFO: saving the best model...
+2020-09-19 12:14:53,244:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:21:28,487:INFO: Epoch 2: 17.14493, Time is 395.23s
+2020-09-19 12:22:43,470:INFO: [dev set] Precision: 56.55, Recall: 60.38, F1: 58.40
+2020-09-19 12:22:43,471:INFO: saving the best model...
+2020-09-19 12:22:52,049:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:29:25,899:INFO: Epoch 3: 13.87730, Time is 393.84s
+2020-09-19 12:30:40,577:INFO: [dev set] Precision: 57.41, Recall: 62.97, F1: 60.06
+2020-09-19 12:30:40,578:INFO: saving the best model...
+2020-09-19 12:30:49,144:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:37:23,285:INFO: Epoch 4: 12.01453, Time is 394.14s
+2020-09-19 12:38:39,055:INFO: [dev set] Precision: 61.57, Recall: 68.31, F1: 64.76
+2020-09-19 12:38:39,055:INFO: saving the best model...
+2020-09-19 12:38:49,137:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:45:23,677:INFO: Epoch 5: 10.73278, Time is 394.52s
+2020-09-19 12:46:40,848:INFO: [dev set] Precision: 63.38, Recall: 69.75, F1: 66.41
+2020-09-19 12:46:40,848:INFO: saving the best model...
+2020-09-19 12:46:49,194:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 12:53:24,283:INFO: Epoch 6: 9.96895, Time is 395.08s
+2020-09-19 12:54:39,191:INFO: [dev set] Precision: 64.10, Recall: 70.91, F1: 67.33
+2020-09-19 12:54:39,191:INFO: saving the best model...
+2020-09-19 12:54:48,142:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:01:23,978:INFO: Epoch 7: 9.28985, Time is 395.83s
+2020-09-19 13:02:40,209:INFO: [dev set] Precision: 65.44, Recall: 69.79, F1: 67.55
+2020-09-19 13:02:40,210:INFO: saving the best model...
+2020-09-19 13:02:48,725:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:09:24,363:INFO: Epoch 8: 8.77681, Time is 395.63s
+2020-09-19 13:10:39,617:INFO: [dev set] Precision: 67.03, Recall: 71.54, F1: 69.21
+2020-09-19 13:10:39,617:INFO: saving the best model...
+2020-09-19 13:10:48,187:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:17:24,155:INFO: Epoch 9: 8.44407, Time is 395.96s
+2020-09-19 13:18:42,204:INFO: [dev set] Precision: 66.22, Recall: 73.55, F1: 69.69
+2020-09-19 13:18:42,204:INFO: saving the best model...
+2020-09-19 13:18:52,586:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:25:29,043:INFO: Epoch 10: 8.10074, Time is 396.44s
+2020-09-19 13:26:43,124:INFO: [dev set] Precision: 67.34, Recall: 72.67, F1: 69.91
+2020-09-19 13:26:43,124:INFO: saving the best model...
+2020-09-19 13:26:51,521:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:33:25,792:INFO: Epoch 11: 7.82504, Time is 394.26s
+2020-09-19 13:34:41,830:INFO: [dev set] Precision: 68.03, Recall: 73.57, F1: 70.69
+2020-09-19 13:34:41,830:INFO: saving the best model...
+2020-09-19 13:34:50,221:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:41:25,523:INFO: Epoch 12: 7.61800, Time is 395.29s
+2020-09-19 13:42:43,081:INFO: [dev set] Precision: 68.09, Recall: 74.35, F1: 71.08
+2020-09-19 13:42:43,081:INFO: saving the best model...
+2020-09-19 13:42:51,789:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 13:49:25,912:INFO: Epoch 13: 7.46199, Time is 394.12s
+2020-09-19 13:50:42,264:INFO: [dev set] Precision: 66.58, Recall: 75.91, F1: 70.94
+2020-09-19 13:57:17,151:INFO: Epoch 14: 7.34811, Time is 394.88s
+2020-09-19 13:58:31,262:INFO: [dev set] Precision: 68.64, Recall: 74.79, F1: 71.58
+2020-09-19 13:58:31,262:INFO: saving the best model...
+2020-09-19 13:58:40,339:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin
+2020-09-19 14:05:15,384:INFO: Epoch 15: 7.23750, Time is 395.04s
+2020-09-19 14:06:29,286:INFO: [dev set] Precision: 68.84, Recall: 75.10, F1: 71.83
+2020-09-19 14:06:29,286:INFO: saving the best model...
+2020-09-19 14:06:37,857:INFO: Model weights saved in pretrained/final_bert_crf/pytorch_model.bin

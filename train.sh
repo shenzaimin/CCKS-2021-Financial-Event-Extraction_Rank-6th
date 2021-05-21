@@ -1,0 +1,11 @@
+#!/bin/bash
+# train for each event
+#python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_tz_1_1 --seed 2020 --device_num '1' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 2 --learning_rate 5e-5 --gradient_accumulation_steps 2 --type "投资" --train_or_predict 1
+#python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_sg_1_1 --seed 2021 --device_num '1' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 2 --learning_rate 5e-5 --gradient_accumulation_steps 3 --type "收购" --train_or_predict 1
+python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_qs_1_1 --seed 2021 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 3 --learning_rate 5e-5 --gradient_accumulation_steps 1 --type "起诉" --train_or_predict 1
+python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_pj_1_1 --seed 2019 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 3 --learning_rate 5e-5 --gradient_accumulation_steps 3 --type "判决" --train_or_predict 1
+python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_gfgqzr_1_1 --seed 2020 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 2 --learning_rate 5e-5 --gradient_accumulation_steps 2 --type "股份股权转让" --train_or_predict 1
+python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_jc_1_1 --seed 2022 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 2 --learning_rate 5e-5 --gradient_accumulation_steps 5 --type "减持" --train_or_predict 1
+python3 train_roberta_model.py --dataset data --num_epochs 30 --model_folder saved_model_roberta_zy_1_1 --seed 2021 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 3 --learning_rate 5e-5 --gradient_accumulation_steps 1 --type "质押" --train_or_predict 1
+# predict for test data
+python3 train_roberta_model.py --dataset data --num_epochs 100 --model_folder saved_model_roberta --seed 2020 --device_num '0' --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 2 --learning_rate 1e-4 --gradient_accumulation_steps 1 --train_or_predict 2
