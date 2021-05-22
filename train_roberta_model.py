@@ -417,7 +417,7 @@ def main():
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     conf = Config(opt)
-    conf.train_file = conf.dataset + "/train"
+    conf.train_file = conf.dataset + "/train_fix"
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
     # data reader
     reader = Reader(conf.digit2zero)
@@ -557,8 +557,8 @@ def main():
                     f.close()
         model.zero_grad()
     # load the best final model
-    utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
-    model.eval()
+    # utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
+    # model.eval()
     logging.info("\n")
     # result = evaluate_model(conf, model, dev_batches, "dev", devs)
     # evaluate_model_for_entity(conf, model, dev_batches, "dev", devs)
@@ -579,7 +579,7 @@ def main_predict():
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     conf = Config(opt)
-    conf.train_file = conf.dataset + "/train"
+    conf.train_file = conf.dataset + "/train_fix"
     conf.test_file = conf.dataset + "/dev"
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
 
@@ -686,7 +686,7 @@ def main_predict():
                         start = -1
                     else:
                         start = -1
-    sub_data = open('valid_result_2.txt', 'w+', encoding='utf-8')
+    sub_data = open('系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
     official_test_df = open('data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8').readlines()
     # official_test_transfer_df = open('data/dev/trans_dev.json', 'r', encoding='utf-8').readlines()
     # official_test_df.extend(official_test_transfer_df)
@@ -700,16 +700,16 @@ def main_predict():
         ids = line['text_id']
         idx_list.append(ids)
     for k in tqdm(lst):
-        sam_dic = {"text_id": k['text_id'], "attribute": [k['attribute'][0]]}
+        sam_dic = {"text_id": k['text_id'], "attributes": [k['attributes'][0]]}
         if k['text_id'] not in merge_dict.keys():
             merge_dict[k['text_id']] = sam_dic
         else:
-            merge_dict[k['text_id']]["attribute"].append(k['attribute'][0])
+            merge_dict[k['text_id']]["attributes"].append(k['attributes'][0])
         if k['text_id'] in idx_list:
             idx_list.remove(k['text_id'])
     merge_lst = list(merge_dict.values())
     for ids in tqdm(idx_list):
-        merge_lst.append({"text_id": ids, "attribute": []})
+        merge_lst.append({"text_id": ids, "attributes": []})
     for i in tqdm(merge_lst):
         # ids = i['text_id']
         # events = i['attribute']

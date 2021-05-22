@@ -6,6 +6,9 @@ from transformers import BertTokenizer
 import json
 import copy
 import random
+import itertools
+
+
 event_type_map = {
     '兼职刷单类': '0',
     '冒充身份类': '1',
@@ -63,8 +66,41 @@ class Reader:
         self.digit2zero = digit2zero
         self.vocab = set()
 
+    def find_seg_point(self, line_dict, default_len=500):
+        seg_points = []
+        spans = []
+        length = len(line_dict['text'])
+        if length <= 500:
+            return []
+        for mention in line_dict['attributes']:
+            spans.append(range(mention['start'], mention['end']+1))
+        spans.sort(key=lambda x: x[0])
+        spans_nums = list(itertools.chain(*[list(span) for span in spans]))
+        seg_point = default_len
+        for span in spans:
+            if seg_point in span:
+                while seg_point in spans_nums:
+                    seg_point -= 1
+                seg_points.append(seg_point)
+                seg_point += default_len
+            elif span[0] > seg_point:
+                while span[0] > seg_point:
+                    seg_points.append(seg_point)
+                    seg_point += default_len
+                if seg_point < span[-1] + 1:
+                    while seg_point in spans_nums:
+                        seg_point -= 1
+                    seg_points.append(seg_point)
+                    seg_point += default_len
+            else:
+                continue
+        for seg_point in range(seg_point, length, default_len):
+            seg_points.append(seg_point)
+        return seg_points
+
     def read_txt(self, file_dir: str, number: int = -1, type: str = "all", aug: bool = False) -> List[Instance]:
         count_0 = 0
+        wrong = 0
         insts = []
         import os
         # print("Reading file: "+file_dir)
@@ -231,78 +267,97 @@ class Reader:
             for line in in_file:
                 line = line.strip()
                 line = json.loads(line)
-                words = line['text']
-                idx = line['text_id']
+                seg_points = self.find_seg_point(line) + [len(line['text'])]
+                words_original = line['text']
+                idx_original = line['text_id']
+                # words = line['text']
+                # idx = line['text_id']
                 start = 0
-                if self.digit2zero:
-                    words = re.sub('\d', '0', words)
-                    count_0 += len(re.findall('0', words))
-                words = list(words)
-                events_dict = dict()
-                event_type = '-'.join([line['level1'], line['level2'], line['level3']])
-                events_dict[event_type] = line['attributes']
-                # events_dict[line['level1']] = line['attributes']
-                # events_dict[line['level2']] = line['attributes']
-                # events_dict[line['level3']] = line['attributes']
-                # # for k in line['attributes']:
-                #     if not k['type'] in events_dict:
-                #         events_dict[k['type']] = [k]
-                #     else:
-                #         events_dict[k['type']].append(k)
-                for t, k in events_dict.items():
-                # for k in line['events']:
-                    trigger = []
-                    mentions = {}
-                    # 不同事件需要单独标注，因为不同事件的实体会重合
-                    labels = ['O'] * len(words)
-                    evn_type = t
-                    # for k in k_list:
-                    for i in k:
-                        start_span = i['start']
-                        if start_span > start:
-                            start = start_span
-                        end_span = i['end'] + 1
-                        role = i['type']
-                        mentions[role] = line['text'][start_span:end_span]
-                        # if role == "trigger":
-                        #     trigger.append(line['content'][start_span:end_span])
-                        if end_span - start_span == 1:
-                            # labels[start_span] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
-                            labels[start_span] = "B-" + attributes_type_map[role]
-                        elif end_span - start_span == 2:
-                            # labels[start_span] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
-                            # labels[start_span+1] = "E-" + event_type_map[evn_type] + attributes_type_map[role]
-                            labels[start_span] = "B-" + attributes_type_map[role]
-                            labels[start_span+1] = "E-" + attributes_type_map[role]
-                        elif end_span - start_span > 2:
-                            for i in range(start_span, end_span):
-                                if i == start_span:
-                                    # labels[i] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
-                                    labels[i] = "B-" + attributes_type_map[role]
-                                elif i == end_span-1:
-                                    # labels[i] = "E-" + event_type_map[evn_type] + attributes_type_map[role]
-                                    labels[i] = "E-" + attributes_type_map[role]
+                # for i, words in enumerate(self.cut(words_original, 500)):
+                for i, seg_point in enumerate(seg_points):
+                    idx = f'{idx_original}-{i}'
+                    if i == len(seg_points) - 1:
+                        words = words_original[start:]
+                    else:
+                        words = words_original[start:seg_point]
+                    line_content_seg = words
+                    if self.digit2zero:
+                        words = re.sub('\d', '0', words)
+                        count_0 += len(re.findall('0', words))
+
+                    words = list(words)
+                    events_dict = dict()
+                    event_type = '-'.join([line['level1'], line['level2'], line['level3']])
+                    events_dict[event_type] = line['attributes']
+                    # events_dict[line['level1']] = line['attributes']
+                    # events_dict[line['level2']] = line['attributes']
+                    # events_dict[line['level3']] = line['attributes']
+                    # # for k in line['attributes']:
+                    #     if not k['type'] in events_dict:
+                    #         events_dict[k['type']] = [k]
+                    #     else:
+                    #         events_dict[k['type']].append(k)
+                    for t, k in events_dict.items():
+                    # for k in line['events']:
+                        trigger = []
+                        mentions = {}
+                        # 不同事件需要单独标注，因为不同事件的实体会重合
+                        labels = ['O'] * len(words)
+                        evn_type = t
+                        # for k in k_list:
+                        for i in k:
+                            if start < i['start'] < seg_point:
+                                start_span = i['start'] - start
+                                end_span = i['end'] + 1 - start
+                                role = i['type']
+                                entity = i['entity']
+                                mentions[role] = line['text'][start_span+start:end_span+start]
+                                # check有多少标错的实体
+                                if i['entity'] != line['text'][start_span+start:end_span+start]:
+                                    start_span = i['start'] - start
+                                    end_span = i['end'] + 1 - start
+                                    print(
+                                        f'{idx_original}-[WRONG]-{line["text"][start_span + start:end_span + start]}-[right]-{i["entity"]}-{start_span + start}')
+                                    wrong += 1
+
+                                if end_span - start_span == 1:
+                                    # labels[start_span] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
+                                    labels[start_span] = "B-" + attributes_type_map[role]
+                                elif end_span - start_span == 2:
+                                    # labels[start_span] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
+                                    # labels[start_span+1] = "E-" + event_type_map[evn_type] + attributes_type_map[role]
+                                    labels[start_span] = "B-" + attributes_type_map[role]
+                                    labels[start_span+1] = "E-" + attributes_type_map[role]
+                                elif end_span - start_span > 2:
+                                    for ids in range(start_span, end_span):
+                                        if ids == start_span:
+                                            # labels[ids] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
+                                            labels[ids] = "B-" + attributes_type_map[role]
+                                        elif ids == end_span-1:
+                                            # labels[ids] = "E-" + event_type_map[evn_type] + attributes_type_map[role]
+                                            labels[ids] = "E-" + attributes_type_map[role]
+                                        else:
+                                            # labels[ids] = "I-" + event_type_map[evn_type] + attributes_type_map[role]
+                                            labels[ids] = "I-" + attributes_type_map[role]
                                 else:
-                                    # labels[i] = "I-" + event_type_map[evn_type] + attributes_type_map[role]
-                                    labels[i] = "I-" + attributes_type_map[role]
-                        else:
-                            print("Wrong span!")
-                    inst = Instance(Sentence(words), labels)
-                    inst.set_id(idx)
-                    inst.type = evn_type
-                    inst.trigger = trigger
-                    inst.content = line['text']
-                    inst.level1 = line['level1']
-                    inst.level2 = line['level2']
-                    inst.level3 = line['level3']
-                    inst.level_total = f'{inst.level1}-{inst.level2}-{inst.level3}'
-                    inst.start = start
-                    inst.mentions = mentions
-                    insts.append(inst)
-                    if len(insts) == number:
-                        break
+                                    print("Wrong span!")
+                        inst = Instance(Sentence(words), labels)
+                        inst.set_id(idx)
+                        inst.type = evn_type
+                        inst.trigger = trigger
+                        inst.content = line_content_seg
+                        inst.level1 = line['level1']
+                        inst.level2 = line['level2']
+                        inst.level3 = line['level3']
+                        inst.level_total = f'{inst.level1}-{inst.level2}-{inst.level3}'
+                        inst.mentions = mentions
+                        insts.append(inst)
+                        if len(insts) == number:
+                            break
+                    start = seg_point
         print("numbers being replaced by zero:", count_0)
         print("number of sentences: {}".format(len(insts)))
+        print(f"{wrong} entities fucking being mismatched!")
         if type == "all":
             return insts
         else:
