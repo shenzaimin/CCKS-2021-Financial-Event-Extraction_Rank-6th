@@ -100,110 +100,21 @@ def evaluate_batch_insts_for_entity(batch_insts: List[Instance],
     :return: numpy array containing (number of true positive, number of all positive, number of true positive + number of false negative)
              You can also refer as (number of correctly predicted entities, number of entities predicted, number of entities in the dataset)
     """
-    type_dict = {'质押': [
-        'trigger',
-        'sub-org',
-        'sub-per',
-        'obj-org',
-        'obj-per',
-        'collateral',
-        'date',
-        'money',
-        'number',
-        'proportion'
-    ],
-    '股份股权转让':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'obj-per',
-            'collateral',
-            'date',
-            'money',
-            'number',
-            'proportion',
-            'target-company'
-        ],
-    '起诉':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'obj-per',
-            'date',
-        ],
-    '投资':
-        [
-            'trigger',
-            'sub',
-            'obj',
-            'money',
-            'date',
-        ],
-    '减持':
-        [
-            'trigger',
-            'sub',
-            'title',
-            'date',
-            'share-per',
-            'share-org',
-            'obj',
-        ],
-    '收购':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'way',
-            'date',
-            'money',
-            'number',
-            'proportion',
-        ],
-    '判决':
-        [
-            'trigger',
-            'sub-per',
-            'sub-org',
-            'institution',
-            'obj-per',
-            'obj-org',
-            'date',
-            'money',
-        ],
-    '担保':
-        [
-            'trigger',
-            'sub-per',
-            'sub-org',
-            'amount',
-            'obj-org',
-            'date',
-            'way',
-        ],
-    '中标':
-        [
-            'trigger',
-            'sub',
-            'obj',
-            'amount',
-            'date',
-        ],
-    '签署合同':
-        [
-            'trigger',
-            'sub-per',
-            'sub-org',
-            'amount',
-            'obj-org',
-            'obj-per',
-            'date',
-        ]}
+
+    type_dict = {'all': [
+    'afcs',
+    'shr',
+    'shrsf',
+    'sfzh',
+    'xyr',
+    'afsj',
+    'zsje',
+    'sapt',
+    'yhkh',
+    'zfqd',
+    'ddh',
+    'sjh',
+    'jyh']}
     p_list = [0] * len(type_dict[type])
     total_entity_list = [0] * len(type_dict[type])
     total_predict_list = [0] * len(type_dict[type])
@@ -231,7 +142,7 @@ def evaluate_batch_insts_for_entity(batch_insts: List[Instance],
                 start = i
             if output[i].startswith("E-"):
                 end = i
-                role = output[i][2+len(type):]
+                role = output[i][2:]
                 output_spans_list[type_dict[type].index(role)].add(Span(start, end, output[i][2:]))
         predict_spans_list = []
         for i in range(len(type_dict[type])):
@@ -242,7 +153,7 @@ def evaluate_batch_insts_for_entity(batch_insts: List[Instance],
                 start = i
             if prediction[i].startswith("E-"):
                 end = i
-                role = prediction[i][2 + len(type):]
+                role = prediction[i][2:]
                 predict_spans_list[type_dict[type].index(role)].add(Span(start, end, prediction[i][2:]))
 
         for j in range(len(type_dict[type])):

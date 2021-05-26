@@ -304,82 +304,20 @@ def evaluate_model(config: Config, model: BertCRF, batch_insts_ids, name: str, i
 
 
 def evaluate_model_for_entity(config: Config, model: BertCRF, batch_insts_ids, name: str, insts: List[Instance]):
-    type_dict = {'质押': [
-        'trigger',
-        'sub-org',
-        'sub-per',
-        'obj-org',
-        'obj-per',
-        'collateral',
-        'date',
-        'money',
-        'number',
-        'proportion'
-    ],
-    '股份股权转让':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'obj-per',
-            'collateral',
-            'date',
-            'money',
-            'number',
-            'proportion',
-            'target-company'
-        ],
-    '起诉':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'obj-per',
-            'date',
-        ],
-    '投资':
-        [
-            'trigger',
-            'sub',
-            'obj',
-            'money',
-            'date',
-        ],
-    '减持':
-        [
-            'trigger',
-            'sub',
-            'title',
-            'date',
-            'share-per',
-            'share-org',
-            'obj',
-        ],
-    '收购':
-        [
-            'trigger',
-            'sub-org',
-            'sub-per',
-            'obj-org',
-            'way',
-            'date',
-            'money',
-            'number',
-            'proportion',
-        ],
-    '判决':
-        [
-            'trigger',
-            'sub-per',
-            'sub-org',
-            'institution',
-            'obj-per',
-            'obj-org',
-            'date',
-            'money',
-        ]}
+    type_dict = {'all': [
+    'afcs',
+    'shr',
+    'shrsf',
+    'sfzh',
+    'xyr',
+    'afsj',
+    'zsje',
+    'sapt',
+    'yhkh',
+    'zfqd',
+    'ddh',
+    'sjh',
+    'jyh']}
 
     # evaluation
     metrics = np.zeros([len(type_dict[config.type]),3],dtype=int)
@@ -437,8 +375,9 @@ def main():
     logging.info("\n")
     logging.info("Loading the datasets...")
     trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type)
-    trains = trains_add_devs[:int(0.8*len(trains_add_devs))]
-    devs = trains_add_devs[int(0.8*len(trains_add_devs)):]
+    random.shuffle(trains_add_devs)
+    trains = trains_add_devs[:int(0.9*len(trains_add_devs))]
+    devs = trains_add_devs[int(0.9*len(trains_add_devs)):]
     print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
     # import numpy as np
     # import pandas as pd
@@ -557,11 +496,11 @@ def main():
                     f.close()
         model.zero_grad()
     # load the best final model
-    # utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
-    # model.eval()
+    utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
+    model.eval()
     logging.info("\n")
-    # result = evaluate_model(conf, model, dev_batches, "dev", devs)
-    # evaluate_model_for_entity(conf, model, dev_batches, "dev", devs)
+    result = evaluate_model(conf, model, dev_batches, "dev", devs)
+    evaluate_model_for_entity(conf, model, dev_batches, "dev", devs)
     logging.info("\n\n")
 
 def main_predict():
@@ -1142,7 +1081,7 @@ def main_predict_voting():
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     print(torch.cuda.current_device())
