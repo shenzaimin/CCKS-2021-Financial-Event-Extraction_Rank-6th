@@ -98,7 +98,7 @@ class Reader:
             seg_points.append(seg_point)
         return seg_points
 
-    def read_txt(self, file_dir: str, number: int = -1, type: str = "all", aug: bool = False) -> List[Instance]:
+    def read_txt(self, file_dir: str, number: int = -1, type: str = "all", max_len: int = 500, aug: bool = False) -> List[Instance]:
         count_0 = 0
         wrong = 0
         insts = []
@@ -267,7 +267,7 @@ class Reader:
             for line in in_file:
                 line = line.strip()
                 line = json.loads(line)
-                seg_points = self.find_seg_point(line) + [len(line['text'])]
+                seg_points = self.find_seg_point(line, max_len) + [len(line['text'])]
                 words_original = line['text']
                 idx_original = line['text_id']
                 # words = line['text']

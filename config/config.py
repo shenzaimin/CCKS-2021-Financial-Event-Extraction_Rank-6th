@@ -56,7 +56,7 @@ class Config:
 
         # transformer hyperparameters
         self.bert_model_dir = args.bert_model_dir
-        self.max_len = args.max_len
+        self.max_len = int(args.max_len)
         self.full_finetuning = args.full_finetuning
         self.clip_grad = args.clip_grad
 
