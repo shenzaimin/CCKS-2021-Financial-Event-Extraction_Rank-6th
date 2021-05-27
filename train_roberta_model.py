@@ -626,7 +626,7 @@ def main_predict():
                         start = -1
                     else:
                         start = -1
-    sub_data = open('系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
+    sub_data = open(f'{conf.model_folder}/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
     official_test_df = open('data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8').readlines()
     # official_test_transfer_df = open('data/dev/trans_dev.json', 'r', encoding='utf-8').readlines()
     # official_test_df.extend(official_test_transfer_df)
@@ -1082,7 +1082,7 @@ def main_predict_voting():
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     print(torch.cuda.current_device())

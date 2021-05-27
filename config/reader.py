@@ -101,6 +101,9 @@ class Reader:
     def read_txt(self, file_dir: str, number: int = -1, type: str = "all", max_len: int = 500, aug: bool = False) -> List[Instance]:
         count_0 = 0
         wrong = 0
+        entity_num = 0
+        entities = []
+        origin_entities = []
         insts = []
         import os
         # print("Reading file: "+file_dir)
@@ -270,6 +273,7 @@ class Reader:
                 seg_points = self.find_seg_point(line, max_len) + [len(line['text'])]
                 words_original = line['text']
                 idx_original = line['text_id']
+                origin_entities.extend(line['attributes'])
                 # words = line['text']
                 # idx = line['text_id']
                 start = 0
@@ -306,11 +310,13 @@ class Reader:
                         evn_type = t
                         # for k in k_list:
                         for i in k:
-                            if start < i['start'] < seg_point:
+                            if start <= i['start'] < seg_point:
+                                entity_num += 1
                                 start_span = i['start'] - start
                                 end_span = i['end'] + 1 - start
                                 role = i['type']
-                                entity = i['entity']
+
+                                entities.append(i)
                                 mentions[role] = line['text'][start_span+start:end_span+start]
                                 # check有多少标错的实体
                                 if i['entity'] != line['text'][start_span+start:end_span+start]:
@@ -357,6 +363,8 @@ class Reader:
                     start = seg_point
         print("numbers being replaced by zero:", count_0)
         print("number of sentences: {}".format(len(insts)))
+        assert len(origin_entities) == len(entities)
+        print("number of entities: {}".format(len(entities)))
         print(f"{wrong} entities fucking being mismatched!")
         if type == "all":
             return insts

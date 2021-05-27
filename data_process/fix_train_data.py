@@ -31,7 +31,7 @@ for f_temp in os.listdir(file_dir):
             if entity != words_original[start_span:end_span]:
                 # check left
                 slide_dist = 0
-                while entity != words_original[start_span:end_span] and slide_dist < 70:
+                while entity != words_original[start_span:end_span] and slide_dist < 70 and start_span >= 0:
                     start_span -= 1
                     end_span -= 1
                     slide_dist += 1
