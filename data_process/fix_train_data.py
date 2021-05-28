@@ -29,23 +29,28 @@ for f_temp in os.listdir(file_dir):
             entity = mention['entity']
             # check有多少标错的实体
             if entity != words_original[start_span:end_span]:
+                new_mention_left = {}
+                new_mention_right = {}
                 # check left
-                slide_dist = 0
-                while entity != words_original[start_span:end_span] and slide_dist < 70 and start_span >= 0:
-                    start_span -= 1
-                    end_span -= 1
-                    slide_dist += 1
-                if entity != words_original[start_span:end_span]:
+                slide_dist_left = 0
+                start_span_left = mention['start']
+                end_span_left = mention['end'] + 1
+                while entity != words_original[start_span_left:end_span_left] and slide_dist_left < 70 and start_span_left >= 0:
+                    start_span_left -= 1
+                    end_span_left -= 1
+                    slide_dist_left += 1
+
+                if entity != words_original[start_span_left:end_span_left]:  # 如果向左没有匹配上
                     # check right
-                    slide_dist = 0
-                    start_span = mention['start']
-                    end_span = mention['end'] + 1
+                    slide_dist_right = 0
+                    start_span_right = mention['start']
+                    end_span_right = mention['end'] + 1
                     while entity != words_original[
-                                         start_span:end_span] and slide_dist < 70:
-                        start_span += 1
-                        end_span += 1
-                        slide_dist += 1
-                    if entity != words_original[start_span:end_span]:
+                                         start_span_right:end_span_right] and slide_dist_right < 70:
+                        start_span_right += 1
+                        end_span_right += 1
+                        slide_dist_right += 1
+                    if entity != words_original[start_span_right:end_span_right]:  # 如果向右也没有匹配上，则交换匹配值和标注答案
                         start_span = mention['start']
                         end_span = mention['end'] + 1
                         print(
@@ -57,16 +62,41 @@ for f_temp in os.listdir(file_dir):
                         new_attributes.append(new_mention)
                     else:
                         new_attributes.remove(mention)
-                        new_mention = {'start': start_span, 'type': mention['type'],
-                                       'end': end_span - 1, 'entity': mention['entity']}
+                        new_mention = {'start': start_span_right, 'type': mention['type'],
+                                       'end': end_span_right - 1, 'entity': mention['entity']}
                         new_attributes.append(new_mention)
-                        print(f'slide distance: {slide_dist}')
+                        print(f'                                            right slide distance -->>: {slide_dist_right}')
+                        if slide_dist_right > 60:
+                            print(idx_original)
                 else:
                     new_attributes.remove(mention)
-                    new_mention = {'start': start_span, 'type': mention['type'],
-                                   'end': end_span - 1, 'entity': mention['entity']}
-                    new_attributes.append(new_mention)
-                    print(f'slide distance: {slide_dist}')
+                    new_mention_left = {'start': start_span_left, 'type': mention['type'],
+                                   'end': end_span_left - 1, 'entity': mention['entity']}
+
+                    # check right
+                    slide_dist_right = 0
+                    start_span_right = mention['start']
+                    end_span_right = mention['end'] + 1
+                    while entity != words_original[
+                                    start_span_right:end_span_right] and slide_dist_right < 70:
+                        start_span_right += 1
+                        end_span_right += 1
+                        slide_dist_right += 1
+                    if entity != words_original[start_span_right:end_span_right]:  # 如果向右没有匹配上，则取左边匹配结果，否则比较偏移值（取较小的）
+                        new_attributes.append(new_mention_left)
+                        print(f'<<-- left slide distance: {slide_dist_left}')
+                    else:
+                        new_mention_right = {'start': start_span_right, 'type': mention['type'],
+                                       'end': end_span_right - 1, 'entity': mention['entity']}
+                        if slide_dist_right <= slide_dist_left:
+                            new_attributes.append(new_mention_right)
+                            print(f'                                            right slide distance -->>: {slide_dist_right}')
+                            if slide_dist_right > 60:
+                                print(idx_original)
+                        else:
+                            new_attributes.append(new_mention_left)
+                            print(f'<<-- left slide distance: {slide_dist_left}')
+
         line['attributes'] = new_attributes
         json_obj = json.dumps(line, ensure_ascii=False)
         out_file.write(json_obj+'\n')

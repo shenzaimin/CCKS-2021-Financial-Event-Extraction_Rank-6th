@@ -375,10 +375,10 @@ def main():
     logging.info("\n")
     logging.info("Loading the datasets...")
     trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)
-    trains_add_devs_filter = [t for t in trains_add_devs if len(t.mentions) != 0]
-    random.shuffle(trains_add_devs_filter)
-    trains = trains_add_devs_filter[:int(0.9*len(trains_add_devs_filter))]
-    devs = trains_add_devs_filter[int(0.9*len(trains_add_devs_filter)):]
+    # trains_add_devs = [t for t in trains_add_devs if len(t.mentions) != 0]  # 去掉权威O的样本
+    # random.shuffle(trains_add_devs_filter)
+    trains = trains_add_devs[:int(0.8*len(trains_add_devs))]
+    devs = trains_add_devs[int(0.8*len(trains_add_devs)):]
     print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
     # import numpy as np
     # import pandas as pd
@@ -1082,7 +1082,7 @@ def main_predict_voting():
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     print(torch.cuda.current_device())

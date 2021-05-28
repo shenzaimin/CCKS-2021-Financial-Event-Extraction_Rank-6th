@@ -1,0 +1,2 @@
+ccks_task1_train.txt   fix_train_data.py中匹配错误（优先匹配了左边的实体并且向左匹配出现了start为负值的情况)
+ccks_task1_train_1.txt fix_train_data.py中匹配错误（优先匹配了左边的实体）

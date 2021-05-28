@@ -119,10 +119,15 @@ if __name__ == '__main__':
     # sixth_submit = open('../验证集提交/第六次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第五次的结果，得到第六次的结果
     # trick_1(third_submit, fifth_submit, sixth_submit)
 
-    valid_file_dir = open('../data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8')
-    sixth_submit_r = open('../验证集提交/第六次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8')
-    ninth_submit = open('../验证集提交/第九次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
-    extract_sfzh_by_reg(valid_file_dir, sixth_submit_r, ninth_submit)
+    third_submit = open('../验证集提交/第三次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
+    tenth_submit = open('../验证集提交/第十次（修正数据重跑第五次）/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
+    eleventh_submit = open('../验证集提交/第十一次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第五次的结果，得到第六次的结果
+    trick_1(third_submit, tenth_submit, eleventh_submit)
+
+    # valid_file_dir = open('../data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8')
+    # sixth_submit_r = open('../验证集提交/第六次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8')
+    # ninth_submit = open('../验证集提交/第九次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
+    # extract_sfzh_by_reg(valid_file_dir, sixth_submit_r, ninth_submit)
     # print(extract_sfzh_by_reg_tmp("长兴县人民检察院 起 诉 书 长检一部刑诉〔2020〕64号 被告人杨某甲,男,1998年**月**日出生,居民身份证号码3305221998********,汉族,初中文化程度,住浙江省长兴县**镇**村**自然村**号,长兴县"))
 
     # seventh_submit = open('../验证集提交/第七次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')
