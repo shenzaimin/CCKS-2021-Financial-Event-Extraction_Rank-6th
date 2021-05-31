@@ -119,10 +119,15 @@ if __name__ == '__main__':
     # sixth_submit = open('../验证集提交/第六次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第五次的结果，得到第六次的结果
     # trick_1(third_submit, fifth_submit, sixth_submit)
 
-    third_submit = open('../验证集提交/第三次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
-    tenth_submit = open('../验证集提交/第十次（修正数据重跑第五次）/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
-    eleventh_submit = open('../验证集提交/第十一次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第五次的结果，得到第六次的结果
-    trick_1(third_submit, tenth_submit, eleventh_submit)
+    # third_submit = open('../验证集提交/第三次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
+    # tenth_submit = open('../验证集提交/第十次（修正数据重跑第五次）/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
+    # eleventh_submit = open('../验证集提交/第十一次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第十次的结果，得到第十一次的结果
+    # trick_1(third_submit, tenth_submit, eleventh_submit)
+
+    eleventh_submit = open('../验证集提交/第十一次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8')
+    fifth_submit = open('../验证集提交/第五次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8').readlines()
+    twelfth_submit = open('../验证集提交/第十二次/系统之神与我同在_valid_result.txt', 'w+', encoding='utf-8')  # 合并第三次和第五次和第十次的结果，得到第十二次的结果
+    trick_1(fifth_submit, eleventh_submit, twelfth_submit)
 
     # valid_file_dir = open('../data/dev/ccks_task1_eval_data.txt', 'r', encoding='utf-8')
     # sixth_submit_r = open('../验证集提交/第六次/系统之神与我同在_valid_result.txt', 'r', encoding='utf-8')

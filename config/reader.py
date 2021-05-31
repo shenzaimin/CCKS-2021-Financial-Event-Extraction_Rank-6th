@@ -105,6 +105,7 @@ class Reader:
         entities = []
         origin_entities = []
         insts = []
+        inst_combine_list = []
         import os
         # print("Reading file: "+file_dir)
         
@@ -268,6 +269,7 @@ class Reader:
             print("Reading file: " + file)
             in_file = open(file, 'r', encoding = 'utf-8')
             for line in in_file:
+                inst_combine = []
                 line = line.strip()
                 line = json.loads(line)
                 seg_points = self.find_seg_point(line, max_len) + [len(line['text'])]
@@ -358,16 +360,18 @@ class Reader:
                         inst.level_total = f'{inst.level1}-{inst.level2}-{inst.level3}'
                         inst.mentions = mentions
                         insts.append(inst)
+                        inst_combine.append(inst)
                         if len(insts) == number:
                             break
                     start = seg_point
+                inst_combine_list.append(inst_combine)
         print("numbers being replaced by zero:", count_0)
         print("number of sentences: {}".format(len(insts)))
         assert len(origin_entities) == len(entities)
         print("number of entities: {}".format(len(entities)))
         print(f"{wrong} entities fucking being mismatched!")
         if type == "all":
-            return insts
+            return inst_combine_list
         else:
             if aug:
                 return [inst for inst in insts if type in inst.type], [inst for inst in aug_insts if type in inst.type]

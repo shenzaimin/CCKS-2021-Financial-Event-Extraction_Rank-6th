@@ -23,6 +23,7 @@ import copy
 from tqdm import tqdm
 from config.reader import event_type_map, attributes_type_map
 import re
+from itertools import chain
 
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -57,6 +58,14 @@ def parse_arguments_t(parser):
     parser.add_argument('--dev_num', type=int, default=-1, help="-1 means all the data")
     parser.add_argument('--num_outer_iterations', type=int, default=10, help="Number of outer iterations for cross validation")
     parser.add_argument('--train_or_predict', type=int, default=1, help="1 means train, 2 means predict for test data")
+    parser.add_argument('--train_dev_split_rate', type=float, default=0.8)
+    parser.add_argument('--shuffle_reading', action="store_true", default=False,
+                        help="shuffle train data before train_dev_split")
+    parser.add_argument('--allow_all_O_sample', action="store_true", default=False,
+                        help="允许全部标签为O的样本出现在训练集中")
+    parser.add_argument('--ensemble_model_num', type=int, default=1,
+                        help="Number of ensemble model")
+
 
 
     # bert hyperparameter
@@ -352,8 +361,8 @@ def evaluate_model_for_entity(config: Config, model: BertCRF, batch_insts_ids, n
 
 def main():
     logging.info("Transformer implementation")
-    parser = argparse.ArgumentParser(description="Transformer CRF implementation")
-    opt = parse_arguments_t(parser)
+    # parser = argparse.ArgumentParser(description="Transformer CRF implementation")
+    # opt = parse_arguments_t(parser)
     conf = Config(opt)
     conf.train_file = conf.dataset + "/train_fix"
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
@@ -375,10 +384,14 @@ def main():
     logging.info("\n")
     logging.info("Loading the datasets...")
     trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)
-    # trains_add_devs = [t for t in trains_add_devs if len(t.mentions) != 0]  # 去掉权威O的样本
-    # random.shuffle(trains_add_devs_filter)
-    trains = trains_add_devs[:int(0.8*len(trains_add_devs))]
-    devs = trains_add_devs[int(0.8*len(trains_add_devs)):]
+
+    if opt.shuffle_reading:
+        random.shuffle(trains_add_devs)
+    trains = list(chain.from_iterable(trains_add_devs[:int(opt.train_dev_split_rate*len(trains_add_devs))]))
+    devs = list(chain.from_iterable(trains_add_devs[int(opt.train_dev_split_rate*len(trains_add_devs)):]))
+    if opt.allow_all_O_sample:
+        trains = [t for t in trains if len(t.mentions) != 0]  # 去掉权威O的样本
+        devs = [d for d in devs if len(d.mentions) != 0]  # 去掉权威O的样本
     print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
     # import numpy as np
     # import pandas as pd
@@ -1082,9 +1095,10 @@ def main_predict_voting():
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+    # os.environ['CUDA_VISIBLE_DEVICES'] = opt.device
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
+    os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
     print(torch.cuda.current_device())
     if opt.train_or_predict == 1:
         main()
