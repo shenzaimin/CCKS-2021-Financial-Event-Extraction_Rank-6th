@@ -464,10 +464,10 @@ def main():
         epoch_loss = 0
         start_time = time.time()
         model.zero_grad()
-
+        print('{} optim: {}'.format(i, optimizer.param_groups[0]['lr']))
         for step, index in enumerate(np.random.permutation(len(train_batches))):  # disorder the train batches
             model.train()
-            scheduler.step()
+            # scheduler.step()
             input_ids, input_seq_lens, annotation_mask, labels = train_batches[index]
             input_masks = input_ids.gt(0)
             # update loss
@@ -483,7 +483,9 @@ def main():
                 #print(loss)
                 nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=conf.clip_grad)
                 optimizer.step()
+                # scheduler.step()
                 model.zero_grad()
+        scheduler.step()
         end_time = time.time()
         logging.info("Epoch %d: %.5f, Time is %.2fs" % (i, epoch_loss / step, end_time - start_time))
 
@@ -559,6 +561,7 @@ def main_predict():
         logging.info("\n")
         logging.info("Loading the datasets...")
         trains = reader.read_txt(conf.train_file, conf.train_num)
+        trains = list(itertools.chain(*trains))
         all_tests = reader.read_test_txt(conf.test_file, conf.train_num)
         # for idx in range(len(all_tests)):
         #     # 给对象打分类标签

@@ -319,7 +319,7 @@ class Reader:
                                 role = i['type']
 
                                 entities.append(i)
-                                mentions[role] = line['text'][start_span+start:end_span+start]
+                                mentions[role] = mentions.get(role, []) + [line['text'][start_span+start:end_span+start]]
                                 # check有多少标错的实体
                                 if i['entity'] != line['text'][start_span+start:end_span+start]:
                                     start_span = i['start'] - start
