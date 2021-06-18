@@ -631,7 +631,7 @@ def main_predict():
                     if tests[idx].prediction[i][2:] == tests[idx].prediction[start][
                                                        2:]:  # START 和 END 的类别必须保持一致，否则不能算实体，放弃抽取
                         end = i
-                        value = tests[idx].content[start+500*int(sub_id):end+500*int(sub_id)+1]
+                        value = tests[idx].seg_content[start+500*int(sub_id):end+500*int(sub_id)+1]
                         role = attributes_type_map_inv[tests[idx].prediction[i][2:]]
                         sample = {"text_id": qids, "attributes": [
                                                               {"entity": value, "start": start+500*int(sub_id), "end": end+500*int(sub_id),

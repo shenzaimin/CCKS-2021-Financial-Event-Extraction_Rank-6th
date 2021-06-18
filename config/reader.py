@@ -382,6 +382,34 @@ class Reader:
         str_list = [text[i:i + seg_len] for i in range(0, len(text), seg_len)]
         return str_list
 
+    def cut_2(self, text, seg_len):
+        """
+        用标点分割
+        """
+        punc_pattern = r'[,; ]'
+        # punc_list = re.findall(punc_pattern, text)
+        sub_text_list = [t for t in re.split(punc_pattern, text) if len(t)]
+        str_list = []
+        sub_str = ""
+        for i, sub_text in enumerate(sub_text_list):
+            if i == 0:
+                sub_str = sub_text
+                assert len(sub_str) <= seg_len
+                continue
+            tmp_str = ','.join([sub_str, sub_text])
+            if len(tmp_str) < seg_len:
+                sub_str = tmp_str
+                if i != len(sub_text_list) - 1:
+                    continue
+            str_list.append(sub_str+',')
+            sub_str = sub_text
+            if len(sub_str) > seg_len:
+                sub_cut_list = self.cut(sub_str, seg_len)
+                str_list.extend(sub_cut_list[:-1])
+                sub_str = sub_cut_list[-1]
+            # assert len(sub_str) <= seg_len
+        return str_list
+
     def read_test_txt(self, file_dir: str, number: int = -1) -> List[Instance]:
         count_0 = 0
         insts = []
@@ -396,9 +424,9 @@ class Reader:
                 line = json.loads(line)
                 words_original = line['text']
                 idx_original = line['text_id']
-                for i, words in enumerate(self.cut(words_original, 500)):
+                for i, words in enumerate(self.cut_2(words_original, 500)):
                     idx = f'{idx_original}-{i}'
-
+                    seg_content = words
                     if self.digit2zero:
                         words = re.sub('\d', '0', words)
                         count_0 += len(re.findall('0', words))
@@ -406,6 +434,7 @@ class Reader:
                     labels = ['O'] * len(words)
                     inst = Instance(Sentence(words), labels)
                     inst.content = line['text']
+                    inst.seg_content = seg_content
                     inst.level1 = line['level1']
                     inst.level2 = line['level2']
                     inst.level3 = line['level3']
