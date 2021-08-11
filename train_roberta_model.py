@@ -61,8 +61,8 @@ def parse_arguments_t(parser):
     parser.add_argument('--train_dev_split_rate', type=float, default=0.8)
     parser.add_argument('--shuffle_reading', action="store_true", default=False,
                         help="shuffle train data before train_dev_split")
-    parser.add_argument('--allow_all_O_sample', action="store_true", default=False,
-                        help="允许全部标签为O的样本出现在训练集中")
+    parser.add_argument('--throw_all_O_sample', action="store_true", default=False,
+                        help="丢掉全部标签为O的样本")
     parser.add_argument('--ensemble_model_num', type=int, default=1,
                         help="Number of ensemble model")
 
@@ -82,6 +82,11 @@ def parse_arguments_t(parser):
 
     parser.add_argument('--type', type=str, default="", choices=['all'],
                         help="GPU/CPU devices")
+    parser.add_argument('--dynamic_bert_layer_combine', action="store_true", default=False,
+                        help="shuffle train data before train_dev_split")
+    parser.add_argument('--R_Drop', action="store_true", default=False,
+                        help="shuffle train data before train_dev_split")
+    parser.add_argument('--R_Drop_K', type=float, default=5.00, help="R_Drop_K")
 
     args = parser.parse_args()
     for k in args.__dict__:
@@ -89,86 +94,92 @@ def parse_arguments_t(parser):
     return args
 
 
-# def train_model(config: Config, train_insts: List[List[Instance]], dev_insts: List[Instance]):
-#     train_num = sum([len(insts) for insts in train_insts])
-#     logging.info(("[Training Info] number of instances: %d" % (train_num)))
-#     # get the batched data
-#     dev_batches = batching_list_instances(config, dev_insts)
-#
-#     model_folder = config.model_folder
-#
-#     logging.info("[Training Info] The model will be saved to: %s" % (model_folder))
-#     if not os.path.exists(model_folder):
-#         os.makedirs(model_folder)
-#
-#     num_outer_iterations = config.num_outer_iterations
-#
-#     for iter in range(num_outer_iterations):
-#
-#         logging.info(f"[Training Info] Running for {iter}th large iterations.")
-#
-#         model_names = []  # model names for each fold
-#
-#         train_batches = [batching_list_instances(config, insts) for insts in train_insts]
-#
-#         logging.info("length of train_insts：%d"% len(train_insts))
-#
-#         # train 2 models in 2 folds
-#         for fold_id, folded_train_insts in enumerate(train_insts):
-#             logging.info(f"[Training Info] Training fold {fold_id}.")
-#             # Initialize bert model
-#             logging.info("Initialized from pre-trained Model")
-#
-#             model_name = model_folder + f"/bert_crf_{fold_id}"
-#             model_names.append(model_name)
-#             train_one(config=config, train_batches=train_batches[fold_id],
-#                       dev_insts=dev_insts, dev_batches=dev_batches, model_name=model_name)
-#
-#         # assign prediction to other folds
-#         logging.info("\n\n")
-#         logging.info("[Data Info] Assigning labels")
-#
-#         # using the model trained in one fold to predict the result of another fold's data
-#         # and update the label of another fold with the predict result
-#         for fold_id, folded_train_insts in enumerate(train_insts):
-#
-#             cfig_path = os.path.join(config.bert_model_dir, 'bert_config.json')
-#             cfig = BertConfig.from_json_file(cfig_path)
-#             cfig.device = config.device
-#             cfig.label2idx = config.label2idx
-#             cfig.label_size = config.label_size
-#             cfig.idx2labels = config.idx2labels
-#
-#             model_name = model_folder + f"/bert_crf_{fold_id}"
-#             model = BertCRF(cfig=cfig)
-#             model.to(cfig.device)
-#             utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
-#
-#             hard_constraint_predict(config=config, model=model,
-#                                     fold_batches=train_batches[1 - fold_id],
-#                                     folded_insts=train_insts[1 - fold_id])  # set a new label id, k is set to 2, so 1 - fold_id can be used
-#         logging.info("\n\n")
-#
-#         logging.info("[Training Info] Training the final model")
-#
-#         # merge the result data to training the final model
-#         all_train_insts = list(itertools.chain.from_iterable(train_insts))
-#
-#         logging.info("Initialized from pre-trained Model")
-#
-#         model_name = model_folder + "/final_bert_crf"
-#         config_name = model_folder + "/config.conf"
-#
-#         all_train_batches = batching_list_instances(config=config, insts=all_train_insts)
-#         # train the final model
-#         model = train_one(config=config, train_batches=all_train_batches, dev_insts=dev_insts, dev_batches=dev_batches,
-#                           model_name=model_name, config_name=config_name)
-#         # load the best final model
-#         utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
-#         model.eval()
-#         logging.info("\n")
-#         result = evaluate_model(config, model, dev_batches, "dev", dev_insts)
-#         logging.info("\n\n")
+def train_model(config: Config, train_insts: List[List[Instance]], dev_insts: List[Instance]):
+    train_num = sum([len(insts) for insts in train_insts])
+    logging.info(("[Training Info] number of instances: %d" % (train_num)))
+    # get the batched data
+    dev_batches = batching_list_instances(config, dev_insts)
+
+    model_folder = config.model_folder
+
+    logging.info("[Training Info] The model will be saved to: %s" % (model_folder))
+    if not os.path.exists(model_folder):
+        os.makedirs(model_folder)
+
+    num_outer_iterations = config.num_outer_iterations
+
+    for iter in range(num_outer_iterations):
+
+        logging.info(f"[Training Info] Running for {iter}th large iterations.")
+
+        model_names = []  # model names for each fold
+
+        train_batches = [batching_list_instances(config, insts) for insts in train_insts]
+
+        logging.info("length of train_insts：%d"% len(train_insts))
+
+        # train 2 models in 2 folds
+        if iter != 0:
+            for fold_id, folded_train_insts in enumerate(train_insts):
+                logging.info(f"[Training Info] Training fold {fold_id}.")
+                # Initialize bert model
+                logging.info("Initialized from pre-trained Model")
+
+                model_name = model_folder + f"/bert_crf_{fold_id}"
+                model_names.append(model_name)
+                train_one(config=config, train_batches=train_batches[fold_id],
+                          dev_insts=dev_insts, dev_batches=dev_batches, model_name=model_name)
+
+        # assign prediction to other folds
+        logging.info("\n\n")
+        logging.info("[Data Info] Assigning labels")
+        torch.cuda.empty_cache()
+        # using the model trained in one fold to predict the result of another fold's data
+        # and update the label of another fold with the predict result
+        for fold_id, folded_train_insts in enumerate(train_insts):
+
+            cfig_path = os.path.join(config.bert_model_dir, 'bert_config.json')
+            cfig = BertConfig.from_json_file(cfig_path)
+            cfig.device = config.device
+            cfig.label2idx = config.label2idx
+            cfig.label_size = config.label_size
+            cfig.idx2labels = config.idx2labels
+            # dynamic_bert_layer_combine
+            if opt.dynamic_bert_layer_combine:
+                cfig.dynamic_bert_layer_combine = True
+                print("*dynamic_bert_layer_combine*")
+            else:
+                cfig.dynamic_bert_layer_combine = False
+            model_name = model_folder + f"/bert_crf_{fold_id}"
+            model = BertCRF(cfig=cfig)
+            model.to(cfig.device)
+            utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
+
+            hard_constraint_predict(config=config, model=model,
+                                    fold_batches=train_batches[1 - fold_id],
+                                    folded_insts=train_insts[1 - fold_id])  # set a new label id, k is set to 2, so 1 - fold_id can be used
+        logging.info("\n\n")
+
+        logging.info("[Training Info] Training the final model")
+
+        # merge the result data to training the final model
+        all_train_insts = list(itertools.chain.from_iterable(train_insts))
+
+        logging.info("Initialized from pre-trained Model")
+
+        model_name = model_folder + "/final_bert_crf"
+        config_name = model_folder + "/config.conf"
+
+        all_train_batches = batching_list_instances(config=config, insts=all_train_insts)
+        # train the final model
+        model = train_one(config=config, train_batches=all_train_batches, dev_insts=dev_insts, dev_batches=dev_batches,
+                          model_name=model_name, config_name=config_name)
+        # load the best final model
+        utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
+        model.eval()
+        logging.info("\n")
+        result = evaluate_model(config, model, dev_batches, "dev", dev_insts)
+        logging.info("\n\n")
 
 
 def hard_constraint_predict(config: Config, model: BertCRF, fold_batches: List[Tuple], folded_insts:List[Instance], model_type:str = "hard"):
@@ -196,91 +207,97 @@ def hard_constraint_predict(config: Config, model: BertCRF, fold_batches: List[T
         batch_id += 1
 
 
-# def train_one(config: Config, train_batches: List[Tuple], dev_insts: List[Instance], dev_batches: List[Tuple],
-#               model_name: str, config_name: str = None) -> BertCRF:
-#
-#     # load config for bertCRF
-#     cfig_path = os.path.join(config.bert_model_dir,
-#                              'bert_config.json')
-#     cfig = BertConfig.from_json_file(cfig_path)
-#     cfig.device = config.device
-#     cfig.label2idx = config.label2idx
-#     cfig.label_size = config.label_size
-#     cfig.idx2labels = config.idx2labels
-#     # load pretrained bert model
-#     model = BertCRF.from_pretrained(config.bert_model_dir, config=cfig)
-#     model.to(config.device)
-#
-#     if config.full_finetuning:
-#         logging.info('full finetuning')
-#         param_optimizer = list(model.named_parameters())
-#         no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
-#         optimizer_grouped_parameters = [
-#             {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
-#              'weight_decay_rate': 0.01},
-#             {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
-#              'weight_decay_rate': 0.0}
-#         ]
-#
-#     else:
-#         logging.info('tuning downstream layer')
-#         param_optimizer = list(model.classifier.named_parameters())
-#         optimizer_grouped_parameters = [{'params': [p for n, p in param_optimizer]}]
-#
-#     optimizer = Adam(optimizer_grouped_parameters, lr=config.learning_rate)
-#     scheduler = LambdaLR(optimizer, lr_lambda=lambda epoch: 1 / (1 + 0.05 * epoch))
-#     # scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.7, patience=1)
-#
-#     model.train()
-#
-#     epoch = config.num_epochs
-#     best_dev_f1 = -1
-#     for i in range(1, epoch + 1):
-#         epoch_loss = 0
-#         start_time = time.time()
-#         model.zero_grad()
-#
-#         for index in np.random.permutation(len(train_batches)):  # disorder the train batches
-#             model.train()
-#             scheduler.step()
-#             input_ids, input_seq_lens, annotation_mask, labels = train_batches[index]
-#             input_masks = input_ids.gt(0)
-#             # update loss
-#             loss = model(input_ids, input_seq_lens=input_seq_lens, annotation_mask=annotation_mask,
-#                          labels=labels, attention_mask=input_masks)
-#             epoch_loss += loss.item()
-#             model.zero_grad()
-#             loss.backward()
-#             # gradient clipping
-#             nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=config.clip_grad)
-#             optimizer.step()
-#         end_time = time.time()
-#         logging.info("Epoch %d: %.5f, Time is %.2fs" % (i, epoch_loss, end_time - start_time))
-#
-#         model.eval()
-#         with torch.no_grad():
-#             # metric is [precision, recall, f_score]
-#             dev_metrics = evaluate_model(config, model, dev_batches, "dev", dev_insts)
-#             if dev_metrics[2] > best_dev_f1:  # save the best model
-#                 logging.info("saving the best model...")
-#                 best_dev_f1 = dev_metrics[2]
-#
-#                 model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
-#                 optimizer_to_save = optimizer
-#                 utils.save_checkpoint({'epoch': epoch + 1,
-#                                        'state_dict': model_to_save.state_dict(),
-#                                        'optim_dict': optimizer_to_save.state_dict()},
-#                                       is_best=dev_metrics[2] > 0,
-#                                       checkpoint=model_name)
-#
-#                 # Save the corresponding config as well.
-#                 if config_name:
-#                     f = open(config_name, 'wb')
-#                     pickle.dump(config, f)
-#                     f.close()
-#         model.zero_grad()
-#
-#     return model
+def train_one(config: Config, train_batches: List[Tuple], dev_insts: List[Instance], dev_batches: List[Tuple],
+              model_name: str, config_name: str = None) -> BertCRF:
+
+    # load config for bertCRF
+    cfig_path = os.path.join(config.bert_model_dir,
+                             'bert_config.json')
+    cfig = BertConfig.from_json_file(cfig_path)
+    cfig.device = config.device
+    cfig.label2idx = config.label2idx
+    cfig.label_size = config.label_size
+    cfig.idx2labels = config.idx2labels
+    # dynamic_bert_layer_combine
+    if opt.dynamic_bert_layer_combine:
+        cfig.dynamic_bert_layer_combine = True
+        print("*dynamic_bert_layer_combine*")
+    else:
+        cfig.dynamic_bert_layer_combine = False
+    # load pretrained bert model
+    model = BertCRF.from_pretrained(config.bert_model_dir, config=cfig)
+    model.to(config.device)
+
+    if config.full_finetuning:
+        logging.info('full finetuning')
+        param_optimizer = list(model.named_parameters())
+        no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
+        optimizer_grouped_parameters = [
+            {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
+             'weight_decay_rate': 0.01},
+            {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
+             'weight_decay_rate': 0.0}
+        ]
+
+    else:
+        logging.info('tuning downstream layer')
+        param_optimizer = list(model.classifier.named_parameters())
+        optimizer_grouped_parameters = [{'params': [p for n, p in param_optimizer]}]
+
+    optimizer = Adam(optimizer_grouped_parameters, lr=config.learning_rate)
+    scheduler = LambdaLR(optimizer, lr_lambda=lambda epoch: 1 / (1 + 0.05 * epoch))
+    # scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.7, patience=1)
+
+    model.train()
+
+    epoch = config.num_epochs
+    best_dev_f1 = -1
+    for i in range(1, epoch + 1):
+        epoch_loss = 0
+        start_time = time.time()
+        model.zero_grad()
+
+        for index in tqdm(np.random.permutation(len(train_batches))):  # disorder the train batches
+            model.train()
+            scheduler.step()
+            input_ids, input_seq_lens, annotation_mask, labels = train_batches[index]
+            input_masks = input_ids.gt(0)
+            # update loss
+            loss = model(input_ids, input_seq_lens=input_seq_lens, annotation_mask=annotation_mask,
+                         labels=labels, attention_mask=input_masks)
+            epoch_loss += loss.item()
+            model.zero_grad()
+            loss.backward()
+            # gradient clipping
+            nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=config.clip_grad)
+            optimizer.step()
+        end_time = time.time()
+        logging.info("Epoch %d: %.5f, Time is %.2fs" % (i, epoch_loss, end_time - start_time))
+
+        model.eval()
+        with torch.no_grad():
+            # metric is [precision, recall, f_score]
+            dev_metrics = evaluate_model(config, model, dev_batches, "dev", dev_insts)
+            if dev_metrics[2] > best_dev_f1:  # save the best model
+                logging.info("saving the best model...")
+                best_dev_f1 = dev_metrics[2]
+
+                model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
+                optimizer_to_save = optimizer
+                utils.save_checkpoint({'epoch': epoch + 1,
+                                       'state_dict': model_to_save.state_dict(),
+                                       'optim_dict': optimizer_to_save.state_dict()},
+                                      is_best=dev_metrics[2] > 0,
+                                      checkpoint=model_name)
+
+                # Save the corresponding config as well.
+                if config_name:
+                    f = open(config_name, 'wb')
+                    pickle.dump(config, f)
+                    f.close()
+        model.zero_grad()
+
+    return model
 
 
 def evaluate_model(config: Config, model: BertCRF, batch_insts_ids, name: str, insts: List[Instance]):
@@ -384,14 +401,18 @@ def main():
     logging.info("\n")
     logging.info("Loading the datasets...")
     trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)
-
+    logging.info("Building label idx ...")
+    # build label2idx and idx2label
+    conf.build_label_idx(list(chain.from_iterable(trains_add_devs)))
     if opt.shuffle_reading:
+        logging.info("\n")
+        logging.info(f"Shuffle reading the datasets...Seed:{conf.seed}")
         random.shuffle(trains_add_devs)
     trains = list(chain.from_iterable(trains_add_devs[:int(opt.train_dev_split_rate*len(trains_add_devs))]))
     devs = list(chain.from_iterable(trains_add_devs[int(opt.train_dev_split_rate*len(trains_add_devs)):]))
-    if opt.allow_all_O_sample:
+    if opt.throw_all_O_sample:
         trains = [t for t in trains if len(t.mentions) != 0]  # 去掉权威O的样本
-        devs = [d for d in devs if len(d.mentions) != 0]  # 去掉权威O的样本
+        # devs = [d for d in devs if len(d.mentions) != 0]  # 去掉权威O的样本
     print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
     # import numpy as np
     # import pandas as pd
@@ -409,9 +430,7 @@ def main():
     #     devs_id_list = np.asarray([d.id for d in devs])
 
 
-    logging.info("Building label idx ...")
-    # build label2idx and idx2label
-    conf.build_label_idx(trains + devs)
+
 
     random.shuffle(trains)
     # train model
@@ -434,7 +453,21 @@ def main():
     cfig.label2idx = conf.label2idx
     cfig.label_size = conf.label_size
     cfig.idx2labels = conf.idx2labels
+    # dynamic_bert_layer_combine
+    if opt.dynamic_bert_layer_combine:
+        cfig.dynamic_bert_layer_combine = True
+        logging.info("*dynamic_bert_layer_combine*")
+    else:
+        cfig.dynamic_bert_layer_combine = False
+    # R-Drop
+    if opt.R_Drop:
+        cfig.R_Drop = True
+        cfig.R_Drop_K = opt.R_Drop_K
+        logging.info(f"*R_Drop: K={opt.R_Drop_K}*")
+    else:
+        cfig.R_Drop = False
     # load pretrained bert model
+    # cfig.hidden_dropout_prob = 0.3
     model = BertCRF.from_pretrained(conf.bert_model_dir, config=cfig)
     model.to(cfig.device)
     if conf.full_finetuning:
@@ -465,7 +498,7 @@ def main():
         start_time = time.time()
         model.zero_grad()
         print('{} optim: {}'.format(i, optimizer.param_groups[0]['lr']))
-        for step, index in enumerate(np.random.permutation(len(train_batches))):  # disorder the train batches
+        for step, index in tqdm(enumerate(np.random.permutation(len(train_batches)))):  # disorder the train batches
             model.train()
             # scheduler.step()
             input_ids, input_seq_lens, annotation_mask, labels = train_batches[index]
@@ -483,9 +516,9 @@ def main():
                 #print(loss)
                 nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=conf.clip_grad)
                 optimizer.step()
-                # scheduler.step()
+                scheduler.step()
                 model.zero_grad()
-        scheduler.step()
+        # scheduler.step()
         end_time = time.time()
         logging.info("Epoch %d: %.5f, Time is %.2fs" % (i, epoch_loss / step, end_time - start_time))
 
@@ -598,7 +631,8 @@ def main_predict():
         # predict
         test_batches = batching_list_instances(conf, tests)
         hard_constraint_predict(config=conf, model=model, fold_batches=test_batches, folded_insts=tests)
-
+        import joblib
+        joblib.dump(tests, f'{conf.model_folder}/tests.bin')
         for idx in range(len(tests)):
             prediction = tests[idx].output_ids
             prediction = [cfig.idx2labels[l] for l in prediction]
@@ -631,7 +665,7 @@ def main_predict():
                     if tests[idx].prediction[i][2:] == tests[idx].prediction[start][
                                                        2:]:  # START 和 END 的类别必须保持一致，否则不能算实体，放弃抽取
                         end = i
-                        value = tests[idx].seg_content[start+500*int(sub_id):end+500*int(sub_id)+1]
+                        value = tests[idx].seg_content[start:end+1]
                         role = attributes_type_map_inv[tests[idx].prediction[i][2:]]
                         sample = {"text_id": qids, "attributes": [
                                                               {"entity": value, "start": start+500*int(sub_id), "end": end+500*int(sub_id),
@@ -691,49 +725,38 @@ def main_predict():
 
 
 def eval_err_output():
-    type_map = {
-        'zy': '质押',
-        'gfgqzr': '股份股权转让',
-        'qs': '起诉',
-        'tz': '投资',
-        'jc': '减持',
-        'sg': '收购',
-        'pj': '判决'
-    }
+    attributes_type_map_inv = dict([(v, k) for (k, v) in attributes_type_map.items()])
     logging.info("Transformer implementation")
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
     conf = Config(opt)
-    conf.train_file = conf.dataset + "/train"
+    conf.train_file = conf.dataset + "/train_fix"
+    conf.test_file = conf.dataset + "/dev"
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
 
     # data reader
     reader = Reader(conf.digit2zero)
-    set_seed(opt, conf.seed)
 
-    # # 读取分类结果
+    # 读取分类结果
     # import pandas as pd
-    # cls_out = pd.read_csv('CCKS-Cls/test_output/cls_out.csv')
+    # cls_out = pd.read_csv('CCKS-Cls/test_output/cls_out_test.csv')
     # cls_dict = dict()
     # for index, row in tqdm(cls_out.iterrows()):
     #     ids = row["id"]
     #     for tp in ['zy', 'gfgqzr', 'qs', 'tz', 'jc', 'sg', 'pj']:
     #         if row[tp] == 1:
-    #             data_type = event_type_map[tp]
+    #             data_type = type_map[tp]
     #             if not ids in cls_dict.keys():
     #                 cls_dict[ids] = [data_type]
     #             else:
     #                 cls_dict[ids].append(data_type)
     # 分模型进行预测
     lst = []
-    idx_list = []
-    for suffix in ['zy', 'gfgqzr', 'qs', 'tz', 'jc', 'sg', 'pj']:
-        # read tests
+    for suffix in ['x']:
+        # read trains/devs
         logging.info("\n")
         logging.info("Loading the datasets...")
-        trains = reader.read_txt(conf.train_file, conf.train_num, type_map[suffix])
-        tests = trains[int(0.8*len(trains)):]
-        idx_list.extend([t.id for t in tests])
+        trains_add_devs = list(chain.from_iterable(reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)))
         # all_tests = reader.read_test_txt(conf.test_file, conf.train_num)
         # for idx in range(len(all_tests)):
         #     # 给对象打分类标签
@@ -741,13 +764,14 @@ def eval_err_output():
         #         all_tests[idx].type = cls_dict[all_tests[idx].id]
         #     else:
         #         all_tests[idx].type = []
-        # tests = [test for test in all_tests if event_type_map[suffix] in test.type]
+        # tests = [test for test in all_tests if type_map[suffix] in test.type]
+        tests = trains_add_devs
         # query_list = reader.get_origin_query(conf.test_file, conf.train_num)
         # assert len(query_list) == len(tests)
 
         logging.info("Building label idx ...")
         # build label2idx and idx2label
-        conf.build_label_idx(trains)
+        conf.build_label_idx(trains_add_devs)
 
         # load model
         cfig_path = os.path.join(conf.bert_model_dir, 'bert_config.json')
@@ -756,11 +780,12 @@ def eval_err_output():
         cfig.label2idx = conf.label2idx
         cfig.label_size = conf.label_size
         cfig.idx2labels = conf.idx2labels
-        model_folder = conf.model_folder + "_" + suffix +"_1_1"
+        model_folder = conf.model_folder
         model_name = model_folder + "/final_bert_crf"
         # model = BertCRF.from_pretrained(conf.bert_model_dir, config=cfig)
         model = BertCRF(cfig=cfig)
         model.to(cfig.device)
+        # print(os.path.join(model_name, 'best.pth.tar'))
         utils.load_checkpoint(os.path.join(model_name, 'best.pth.tar'), model)
         model.eval()
         print(os.path.join(model_name, 'best.pth.tar'))
@@ -776,8 +801,10 @@ def eval_err_output():
             # prediction = tests[idx].output
             tests[idx].prediction = prediction
         for idx in range(len(tests)):
-            qids = tests[idx].id
-            data_type = type_map[suffix]
+            qids_original = tests[idx].id
+            qids = re.search('\d+', qids_original).group()
+            sub_id = re.search('\d+$', qids_original).group()
+            # data_type = type_map[suffix]
             start = -1
             for i in range(len(tests[idx].prediction)):
                 if tests[idx].prediction[i].startswith("B-") and start == -1:
@@ -800,53 +827,61 @@ def eval_err_output():
                                                        2:]:  # START 和 END 的类别必须保持一致，否则不能算实体，放弃抽取
                         end = i
                         value = tests[idx].content[start:end + 1]
-                        role = tests[idx].prediction[i][2 + len(suffix):]
-                        sample = {"id": qids, "events": [{"type": data_type,
-                                                          "mentions": [
-                                                              {"word": value, "span": [start, end + 1],
-                                                               "role": role
-                                                               }]}]}
+                        role = attributes_type_map_inv[tests[idx].prediction[i][2:]]
+                        sample = {"text_id": qids, "attributes": [
+                            {"entity": value, "start": start + 500 * int(sub_id), "end": end + 500 * int(sub_id),
+                             "type": role}
+                        ]
+                                  }
                         lst.append(sample)
                         start = -1
                     else:
                         start = -1
-    sub_data = open('train_valid_result.json', 'w+', encoding='utf-8')
+    sub_data = open(f'{conf.model_folder}/dev_prediction.txt', 'w+', encoding='utf-8')
+    official_test_df = open('data/train_fix/ccks_task1_train.txt', 'r', encoding='utf-8').readlines()
+    # official_test_transfer_df = open('data/dev/trans_dev.json', 'r', encoding='utf-8').readlines()
+    # official_test_df.extend(official_test_transfer_df)
     merge_dict = dict()
+    # 获取所有的id集合
+    idx_list = []
+    import json
+    for line in tqdm(official_test_df):
+        line = line.strip()
+        line = json.loads(line)
+        ids = line['text_id']
+        idx_list.append(ids)
     for k in tqdm(lst):
-        sam_dic = {"id": k['id'], "events": [k['events'][0]]}
-        if k['id'] not in merge_dict.keys():
-            merge_dict[k['id']] = sam_dic
+        sam_dic = {"text_id": k['text_id'], "attributes": [k['attributes'][0]]}
+        if k['text_id'] not in merge_dict.keys():
+            merge_dict[k['text_id']] = sam_dic
         else:
-            merge_dict[k['id']]["events"].append(k['events'][0])
-        if k['id'] in idx_list:
-            idx_list.remove(k['id'])
+            merge_dict[k['text_id']]["attributes"].append(k['attributes'][0])
+        if k['text_id'] in idx_list:
+            idx_list.remove(k['text_id'])
     merge_lst = list(merge_dict.values())
     for ids in tqdm(idx_list):
-        merge_lst.append({"id": ids, "events": []})
-    whole_data = reader.read_txt(conf.train_file, conf.train_num, '')
+        merge_lst.append({"text_id": ids, "attributes": []})
     for i in tqdm(merge_lst):
-        ids = i['id']
-        events = i['events']
-        sub_dic = {}
-        info_dic = {}
-        for d in events:
-            if d['type'] not in info_dic:
-                info_dic[d['type']] = d['mentions']
-                list1 = info_dic[d['type']]
-            else:
-                info_dic[d['type']] = info_dic[d['type']] + d['mentions']
-        sub_dic['id'] = ids
-        t_list = []
-        for key, value in info_dic.items():
-            dic1 = {}
-            dic1['type'] = key
-            dic1['mentions'] = value
-            t_list.append(dic1)
-        sub_dic['events'] = t_list
-        sub_dic['content'] = [t.content for t in whole_data if t.id==ids][0]
+        # ids = i['text_id']
+        # events = i['attribute']
+        # sub_dic = {}
+        # info_dic = {}
+        # for d in events:
+        #     if d['type'] not in info_dic:
+        #         info_dic[d['type']] = d['mentions']
+        #         list1 = info_dic[d['type']]
+        #     else:
+        #         info_dic[d['type']] = info_dic[d['type']] + d['mentions']
+        # sub_dic['text_id'] = ids
+        # t_list = []
+        # for key, value in info_dic.items():
+        #     dic1 = {}
+        #     dic1['type'] = key
+        #     dic1['mentions'] = value
+        #     t_list.append(dic1)
+        # sub_dic['attribute'] = t_list
         # print(sub_dic)
-        import json
-        json.dump(sub_dic, sub_data, ensure_ascii=False)
+        json.dump(i, sub_data, ensure_ascii=False)
         sub_data.write('\n')
 
 
@@ -1097,6 +1132,60 @@ def main_predict_voting():
             file.write(jsobj+'\n')
 
 
+def main_stacking():
+    logging.info("Transformer implementation")
+    # parser = argparse.ArgumentParser(description="Transformer CRF implementation")
+    # opt = parse_arguments_t(parser)
+    conf = Config(opt)
+    conf.train_file = conf.dataset + "/train_fix"
+    os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
+    # data reader
+    reader = Reader(conf.digit2zero)
+    set_seed(opt, conf.seed)
+
+    if not os.path.exists(conf.model_folder):
+        os.makedirs(conf.model_folder)
+
+    # set logger
+    utils.set_logger(os.path.join(conf.model_folder, 'train.log'))
+
+    # params
+    for k in opt.__dict__:
+        logging.info(k + ": " + str(opt.__dict__[k]))
+
+    # read trains/devs
+    logging.info("\n")
+    logging.info("Loading the datasets...")
+    trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)
+
+    logging.info("Building label idx ...")
+    # build label2idx and idx2label
+    conf.build_label_idx(list(chain.from_iterable(trains_add_devs)))
+
+    if opt.shuffle_reading:
+        logging.info("\n")
+        logging.info(f"Shuffle reading the datasets...Seed:{conf.seed}")
+        random.shuffle(trains_add_devs)
+    trains = list(chain.from_iterable(trains_add_devs[:int(opt.train_dev_split_rate * len(trains_add_devs))]))
+    devs = list(chain.from_iterable(trains_add_devs[int(opt.train_dev_split_rate * len(trains_add_devs)):]))
+    if opt.throw_all_O_sample:
+        trains = [t for t in trains if len(t.mentions) != 0]  # 去掉训练集全O的样本
+        # devs = [d for d in devs if len(d.mentions) != 0]  # 去掉开发集全O的样本
+    print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
+    random.shuffle(trains)
+    # set the prediction flag, if is_prediction is False, we will not update this label.
+    for inst in trains:
+        inst.is_prediction = [False] * len(inst.input)
+        for pos, label in enumerate(inst.output):
+            if label == conf.O:
+                inst.is_prediction[pos] = True
+    # dividing the data into 2 parts(num_folds default to 2)
+    num_insts_in_fold = math.ceil(len(trains) / conf.num_folds)
+    trains = [trains[i * num_insts_in_fold: (i + 1) * num_insts_in_fold] for i in range(conf.num_folds)]
+
+    train_model(config=conf, train_insts=trains, dev_insts=devs)
+
+
 if __name__ == "__main__":
     # os.environ['CUDA_VISIBLE_DEVICES'] = opt.device
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
@@ -1107,5 +1196,7 @@ if __name__ == "__main__":
         main()
     elif opt.train_or_predict == 2:
         main_predict()
-    # else:
-    #      eval_err_output()
+    elif opt.train_or_predict == 3:
+        main_stacking()
+    else:
+         eval_err_output()

@@ -327,7 +327,10 @@ class Reader:
                                     print(
                                         f'{idx_original}-[WRONG]-{line["text"][start_span + start:end_span + start]}-[right]-{i["entity"]}-{start_span + start}')
                                     wrong += 1
-
+                                if self.digit2zero:
+                                    if role in ['身份证号', '银行卡号', '订单号', '手机号', '交易号']:
+                                        print(i)
+                                        continue
                                 if end_span - start_span == 1:
                                     # labels[start_span] = "B-" + event_type_map[evn_type] + attributes_type_map[role]
                                     labels[start_span] = "B-" + attributes_type_map[role]
@@ -424,7 +427,7 @@ class Reader:
                 line = json.loads(line)
                 words_original = line['text']
                 idx_original = line['text_id']
-                for i, words in enumerate(self.cut_2(words_original, 500)):
+                for i, words in enumerate(self.cut(words_original, 500)):
                     idx = f'{idx_original}-{i}'
                     seg_content = words
                     if self.digit2zero:

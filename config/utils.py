@@ -6,10 +6,13 @@ import torch.nn as nn
 from config import Config
 from termcolor import colored
 from transformers import BertTokenizer
+from tqdm import tqdm
 
 bert_model_dir = "chinese_roberta_wwm_ext_pytorch"  # change this if needed
 tokenizer = BertTokenizer.from_pretrained(bert_model_dir, do_lower_case=True)
-
+# bert_model_dir_2 = "chinese_roberta_wwm_large_ext_pytorch"  # change this if needed
+# tokenizer_2 = BertTokenizer.from_pretrained(bert_model_dir_2, do_lower_case=True)
+# print(1)
 
 def log_sum_exp_pytorch(vec: torch.Tensor) -> torch.Tensor:
     """
@@ -28,7 +31,7 @@ def batching_list_instances(config: Config, insts: List[Instance]):
     batch_size = config.batch_size
     total_batch = train_num // batch_size + 1 if train_num % batch_size != 0 else train_num // batch_size
     batched_data = []
-    for batch_id in range(total_batch):
+    for batch_id in tqdm(range(total_batch)):
         one_batch_insts = insts[batch_id * batch_size:(batch_id + 1) * batch_size]
         batched_data.append(simple_batching(config, one_batch_insts))
 
