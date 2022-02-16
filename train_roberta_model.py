@@ -378,8 +378,8 @@ def evaluate_model_for_entity(config: Config, model: BertCRF, batch_insts_ids, n
 
 def main():
     logging.info("Transformer implementation")
-    # parser = argparse.ArgumentParser(description="Transformer CRF implementation")
-    # opt = parse_arguments_t(parser)
+    parser = argparse.ArgumentParser(description="Transformer CRF implementation")
+    opt = parse_arguments_t(parser)
     conf = Config(opt)
     conf.train_file = conf.dataset + "/train_fix"
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
@@ -553,15 +553,6 @@ def main():
     logging.info("\n\n")
 
 def main_predict():
-    # type_map = {
-    #     'zy': '质押',
-    #     'gfgqzr': '股份股权转让',
-    #     'qs': '起诉',
-    #     'tz': '投资',
-    #     'jc': '减持',
-    #     'sg': '收购',
-    #     'pj': '判决'
-    # }
     attributes_type_map_inv = dict([(v,k) for (k,v) in attributes_type_map.items()])
     logging.info("Transformer implementation")
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
@@ -636,32 +627,16 @@ def main_predict():
         for idx in range(len(tests)):
             prediction = tests[idx].output_ids
             prediction = [cfig.idx2labels[l] for l in prediction]
-            # 测试一下标答labels的抽取
-            # prediction = tests[idx].output
             tests[idx].prediction = prediction
         for idx in range(len(tests)):
             qids_original = tests[idx].id
             qids = re.search('\d+', qids_original).group()
             sub_id = re.search('\d+$', qids_original).group()
-            # data_type = type_map[suffix]
             start = -1
             for i in range(len(tests[idx].prediction)):
                 if tests[idx].prediction[i].startswith("B-") and start == -1:
                     start = i
-                    # 找出单字实体(仅针对NUM类别)
-                    # if tests[idx].prediction[i] == "B-NUM":
-                    #     if i == len(tests[idx].prediction) - 1 or tests[idx].prediction[i + 1].startswith("B-") or \
-                    #             tests[idx].prediction[i + 1].startswith("O"):
-                    #         name = predict_dict['query'][i]
-                    #         predict_dict[tests[idx].prediction[i][2:]] = predict_dict.get(tests[idx].prediction[i][2:],
-                    #                                                                       []) + [
-                    #                                                          {"str": name, "start_position": i,
-                    #                                                           "end_position": i}]
-                    #         start = -1
                 if tests[idx].prediction[i].startswith("E-") and start != -1:
-                    # if i != len(tests[idx].prediction) - 1 and predict_dict['query'][i+1] == '之':  # 修正模型对于TV类别预测的不恰当分割
-                    #     continue
-                    # else:
                     if tests[idx].prediction[i][2:] == tests[idx].prediction[start][
                                                        2:]:  # START 和 END 的类别必须保持一致，否则不能算实体，放弃抽取
                         end = i
@@ -1199,4 +1174,4 @@ if __name__ == "__main__":
     elif opt.train_or_predict == 3:
         main_stacking()
     else:
-         eval_err_output()
+        eval_err_output()
