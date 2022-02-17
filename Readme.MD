@@ -15,8 +15,9 @@
 ### 相关说明
 ### 1.chinese_roberta_wwm_large_ext_pytorch 预训练模型文件路径 chinese_roberta_wwm_ext_pytorch/
 > 下载链接： <br/>
-http://pan.iflytek.com/#/link/9B46A0ABA70C568AAAFCD004B9A2C773 <br/>
-提取密码：43eH <br/>
+链接：https://pan.baidu.com/s/1UaySHYACs1QOu9Q6cx4MvQ <br/>
+提取码：bfd1 <br/>
+
 
 
 ### 2.投票预测：采用投票基于kfold模型进行事件的集成预测，生成结果文件：系统之神与我同在_valid_result.txt(存放路径为conf.model_folder/系统之神与我同在_valid_result.txt)
