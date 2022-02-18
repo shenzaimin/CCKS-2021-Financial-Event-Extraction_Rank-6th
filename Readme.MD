@@ -12,12 +12,13 @@
 训练集数据路径：data/train/ccks_task1_train.txt <br/>
 测试集数据路径：data/dev/ccks_task1_eval_data.txt <br/>
 
+## 运行步骤
+### 训练
+> python train_roberta_model.py  --dataset data --num_epochs 30 --model_folder saved_model_roberta_split_train_data_base --seed 2021 --device_num 0 --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 9 --learning_rate 5e-5 --gradient_accumulation_steps 1 --type all --train_or_predict 1 --train_dev_split_rate 0.8
+### 预测
+> python train_roberta_model.py  --dataset data --model_folder saved_model_roberta_split_train_data_base --seed 2021 --device_num 0 --bert_model_dir chinese_roberta_wwm_ext_pytorch --batch_size 9 --type all --train_or_predict 2
 ### 相关说明
 ### 1.chinese_roberta_wwm_large_ext_pytorch 预训练模型文件路径 chinese_roberta_wwm_ext_pytorch/
 > 下载链接： <br/>
-链接：https://pan.baidu.com/s/1UaySHYACs1QOu9Q6cx4MvQ <br/>
-提取码：bfd1 <br/>
-
-
-
-### 2.投票预测：采用投票基于kfold模型进行事件的集成预测，生成结果文件：系统之神与我同在_valid_result.txt(存放路径为conf.model_folder/系统之神与我同在_valid_result.txt)
+http://pan.iflytek.com/#/link/9B46A0ABA70C568AAAFCD004B9A2C773 <br/>
+提取密码：43eH <br/>
