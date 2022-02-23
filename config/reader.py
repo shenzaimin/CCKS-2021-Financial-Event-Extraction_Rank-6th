@@ -67,6 +67,7 @@ class Reader:
         self.vocab = set()
 
     def find_seg_point(self, line_dict, default_len=500):
+        """通过实体的位置，寻找不截断实体的切分位置"""
         seg_points = []
         spans = []
         length = len(line_dict['text'])
@@ -99,6 +100,7 @@ class Reader:
         return seg_points
 
     def read_txt(self, file_dir: str, number: int = -1, type: str = "all", max_len: int = 500, aug: bool = False) -> List[Instance]:
+        """读取原始数据，得到包含text和label序列的inst实例列表"""
         count_0 = 0
         wrong = 0
         entity_num = 0
@@ -269,7 +271,7 @@ class Reader:
             print("Reading file: " + file)
             in_file = open(file, 'r', encoding = 'utf-8')
             for line in in_file:
-                inst_combine = []
+                inst_combine = []  # [[inst,inst],[],...] itertools.chain
                 line = line.strip()
                 line = json.loads(line)
                 seg_points = self.find_seg_point(line, max_len) + [len(line['text'])]

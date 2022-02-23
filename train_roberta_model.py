@@ -30,6 +30,9 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def set_seed(opt, seed):
+    """
+    设置seed，方便复现
+    """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -40,6 +43,7 @@ def set_seed(opt, seed):
 
 
 def parse_arguments_t(parser):
+    """参数配置"""
     # Training Hyperparameters
     parser.add_argument('--device', type=str, default="cuda", choices=['cpu', 'cuda'],
                         help="GPU/CPU devices")
@@ -377,6 +381,9 @@ def evaluate_model_for_entity(config: Config, model: BertCRF, batch_insts_ids, n
 
 
 def main():
+    """
+    模型训练
+    """
     logging.info("Transformer implementation")
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
     opt = parse_arguments_t(parser)
@@ -400,7 +407,7 @@ def main():
     # read trains/devs
     logging.info("\n")
     logging.info("Loading the datasets...")
-    trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)
+    trains_add_devs = reader.read_txt(conf.train_file, conf.train_num, opt.type, int(conf.max_len) - 12)  # [[inst_sub1,inst_sub2],[],...]  inst:
     logging.info("Building label idx ...")
     # build label2idx and idx2label
     conf.build_label_idx(list(chain.from_iterable(trains_add_devs)))
@@ -408,11 +415,11 @@ def main():
         logging.info("\n")
         logging.info(f"Shuffle reading the datasets...Seed:{conf.seed}")
         random.shuffle(trains_add_devs)
-    trains = list(chain.from_iterable(trains_add_devs[:int(opt.train_dev_split_rate*len(trains_add_devs))]))
-    devs = list(chain.from_iterable(trains_add_devs[int(opt.train_dev_split_rate*len(trains_add_devs)):]))
-    if opt.throw_all_O_sample:
-        trains = [t for t in trains if len(t.mentions) != 0]  # 去掉权威O的样本
-        # devs = [d for d in devs if len(d.mentions) != 0]  # 去掉权威O的样本
+    trains = list(chain.from_iterable(trains_add_devs[:int(opt.train_dev_split_rate*len(trains_add_devs))]))  # [inst,inst,...]
+    devs = list(chain.from_iterable(trains_add_devs[int(opt.train_dev_split_rate*len(trains_add_devs)):]))  # [inst,inst,...]
+    # if opt.throw_all_O_sample:
+    #     trains = [t for t in trains if len(t.mentions) != 0]  # 去掉权威O的样本
+    #     # devs = [d for d in devs if len(d.mentions) != 0]  # 去掉权威O的样本
     print('【trains: ' + str(len(trains)) + ' devs: ' + str(len(devs)) + '】')
     # import numpy as np
     # import pandas as pd
@@ -468,7 +475,7 @@ def main():
         cfig.R_Drop = False
     # load pretrained bert model
     # cfig.hidden_dropout_prob = 0.3
-    model = BertCRF.from_pretrained(conf.bert_model_dir, config=cfig)
+    model = BertCRF.from_pretrained(conf.bert_model_dir, config=cfig)  # 加载原始Roberta-wwm权重
     model.to(cfig.device)
     if conf.full_finetuning:
         logging.info('full finetuning')
@@ -493,6 +500,7 @@ def main():
 
     epoch = conf.num_epochs
     best_dev_f1 = -1
+    """开始训练"""
     for i in range(1, epoch + 1):
         epoch_loss = 0
         start_time = time.time()
@@ -506,7 +514,7 @@ def main():
             # update loss
             loss = model(input_ids, input_seq_lens=input_seq_lens, annotation_mask=annotation_mask,
                          labels=labels, attention_mask=input_masks)
-            if opt.gradient_accumulation_steps > 1:
+            if opt.gradient_accumulation_steps > 1:  # 梯度累加
                 loss = loss/opt.gradient_accumulation_steps
             epoch_loss += loss.item()
             # model.zero_grad()
@@ -525,7 +533,7 @@ def main():
         model.eval()
         with torch.no_grad():
             # metric is [precision, recall, f_score]
-            dev_metrics = evaluate_model(conf, model, dev_batches, "dev", devs)
+            dev_metrics = evaluate_model(conf, model, dev_batches, "dev", devs)  # 模型评估
             if dev_metrics[2] > best_dev_f1:  # save the best model
                 logging.info("saving the best model...")
                 best_dev_f1 = dev_metrics[2]
@@ -552,7 +560,9 @@ def main():
     evaluate_model_for_entity(conf, model, dev_batches, "dev", devs)
     logging.info("\n\n")
 
+
 def main_predict():
+    """模型预测"""
     attributes_type_map_inv = dict([(v,k) for (k,v) in attributes_type_map.items()])
     logging.info("Transformer implementation")
     parser = argparse.ArgumentParser(description="Transformer CRF implementation")
@@ -1167,11 +1177,9 @@ if __name__ == "__main__":
     opt = parse_arguments_t(parser)
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.device_num
     print(torch.cuda.current_device())
-    if opt.train_or_predict == 1:
+    if opt.train_or_predict == 1:  # 模型训练
         main()
-    elif opt.train_or_predict == 2:
+    elif opt.train_or_predict == 2:  # 模型预测
         main_predict()
-    elif opt.train_or_predict == 3:
-        main_stacking()
     else:
-        eval_err_output()
+        logging.info("Wrong mode!")

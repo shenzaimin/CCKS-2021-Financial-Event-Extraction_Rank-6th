@@ -27,6 +27,9 @@ def log_sum_exp_pytorch(vec: torch.Tensor) -> torch.Tensor:
 
 
 def batching_list_instances(config: Config, insts: List[Instance]):
+    """
+    构造模型需要的输入，也即将文本和标签Tensor化存储
+    """
     train_num = len(insts)
     batch_size = config.batch_size
     total_batch = train_num // batch_size + 1 if train_num % batch_size != 0 else train_num // batch_size

@@ -20,5 +20,5 @@
 ### 相关说明
 ### 1.chinese_roberta_wwm_large_ext_pytorch 预训练模型文件路径 chinese_roberta_wwm_ext_pytorch/
 > 下载链接： <br/>
-http://pan.iflytek.com/#/link/9B46A0ABA70C568AAAFCD004B9A2C773 <br/>
-提取密码：43eH <br/>
+链接：https://pan.baidu.com/s/1jUZksZi2Kb9hymjSTV1m9Q  <br/>
+提取密码：bfd1 <br/>
